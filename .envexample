@@ -1,0 +1,32 @@
+# ==================================================================== #
+# Arquivo .env                                                         #
+# Contém todas as variáveis de ambiente necessárias para               #
+# execução das automações RPA.                                         #
+#                                                                      #
+# ATENÇÃO:                                                             #
+# 1. Não compartilhe este arquivo publicamente (contém credenciais).   #
+# 2. Não faça commit no GitHub de arquivos com senhas em texto plano.  #
+# 3. Sempre faça o build do executavel após alterar variáveis.         # 
+# ==================================================================== #
+
+# ===================== #
+# Configurações gerais  #
+# ===================== #
+# URL base da API utilizada pelas automações.
+API_URL="https://grupolelacteste.goevo.net/API/v1/" 
+# Token de autenticação do app no GOEVO
+GOEVO_APP_TPTOKEN="0a00ef42-d8c9-41b8-a89f-d3e8e9428e6e" 
+# Identificador do executor RPA (nome do servidor ou agente)
+RPA_EXECUTOR="SRV_RPA_001" 
+# Indica se a automação está sendo executada dentro de um container Docker.
+DOCKER_RUNNING="False"
+
+# =================== #
+# Variáveis dinamicas #
+# =================== #
+APPLICATION="dealernet"
+SEARCH_TIMEOUT="60"
+SYSTEM_URL="https://wfgrupolelac.dealernetworkflow.com.br/LoginAux.aspx?Windows"
+USER="GOEVO"
+PASSWORD="Goevo@2026#"
+
