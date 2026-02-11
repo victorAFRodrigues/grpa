@@ -2,8 +2,9 @@ from selenium import webdriver
 from core.browser_automation import SeleniumBrowserOptions as SBO
 
 class Automation:
-    def __init__(self):
+    def __init__(self, it_continous:str):
         self.driver = None
+        self.it_continous = True if it_continous == 'true' else False
 
     def __enter__(self):
         # service = Service()  # Usa o ChromeDriver padrão no PATH

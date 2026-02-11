@@ -1,7 +1,7 @@
 #Pyautogui Functions
 import os
 from time import sleep
-
+from core.logger import Logger
 from pyautogui import click, locateCenterOnScreen, position, press
 
 
@@ -12,6 +12,8 @@ def start_program(path: str):
     Args:
         path (str): Caminho para o executável ou arquivo.
     """
+    log = Logger("start_program").get_logger()
+    log.info("Iniciando programa...")
     os.startfile(path)
 
 

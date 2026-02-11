@@ -2,7 +2,7 @@ from json import dumps
 import json
 import requests
 from modules.utils.general import DotEnv
-from api.models import GetTaskModel, ResetTaskModel, FinishTaskModel
+from api.database.schemas import GetTaskModel, ResetTaskModel, FinishTaskModel
 
 
 # Classe API, ela foi criada para padronizar as requests tendo em vista que todas devem ser feitas do mesmo jeito

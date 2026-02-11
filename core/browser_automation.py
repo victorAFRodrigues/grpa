@@ -10,7 +10,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from modules.utils.general import DotEnv
-
+from core.logger import Logger
 
 class SeleniumElement:
     """
@@ -48,66 +48,6 @@ class SeleniumElement:
         self.__value = value
         self.__timeout = timeout
 
-
-    def find_old(self):
-        """
-        Procura por um **único elemento** na página atual.
-
-        Utiliza EC.visibility_of_element_located para garantir que o elemento esteja
-        visível. Se não for encontrado no contexto principal, itera sobre todos os
-        iframes presentes, alternando o contexto, para tentar localizar o elemento.
-
-        Raises:
-            TimeoutException: Se o elemento não for encontrado após o timeout em
-                nenhum contexto (principal ou iframes).
-
-        Returns:
-            WebElement: O elemento Selenium encontrado.
-        """
-        # Faz a busca da propriedade By com base no valor fornecido no construtor
-        by = self.__BY_MAP.get(self.__by.lower(), self.__by)
-        
-        # Tenta encontrar o elemento no contexto atual
-        try: 
-            if isinstance(self.__driver, WebDriver):
-                # tenta achar o elemento usando espera explicita para visibilidade
-                element = WebDriverWait(self.__driver, self.__timeout).until(
-                    EC.visibility_of_element_located((by, self.__value))
-                )
-
-            else:
-                # tenta achar o elemento diretamente no WebElement fornecido
-                element = self.__driver.find_element(by, self.__value)
-
-            return element
-
-        except TimeoutException:
-            # Caso nao encontre no contexto atual, tenta em iframes
-            pass
-
-        iframes = self.__driver.find_elements(By.TAG_NAME, "iframe")
-
-        for iframe in iframes:
-            self.__driver.switch_to.frame(iframe)
-
-            try:
-                self.__timeout = 0  # evita espera desnecessária em iframes aninhados
-
-                element = self.find()
-
-                if element:
-                    self.__driver.switch_to.default_content() # Volta ao contexto principal antes de retornar
-                    return element
-            
-            except TimeoutException:
-                self.__driver.switch_to.parent_frame()
-                pass
-        
-        self.__driver.switch_to.default_content()
-        # Se chegou aqui, não encontrou em lugar nenhum
-        raise TimeoutException(f"Elemento: '{self.__value}' não encontrado")
-
-
     def find(self, context=None):
         """
         Procura por um **único elemento** na página atual.
@@ -123,6 +63,8 @@ class SeleniumElement:
         Returns:
             WebElement: O elemento Selenium encontrado.
         """
+        S
+
         # Faz a busca da propriedade By com base no valor fornecido no construtor
         by = self.__BY_MAP.get(self.__by.lower(), self.__by)
         driver = context or self.__driver
