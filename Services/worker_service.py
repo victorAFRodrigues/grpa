@@ -1,35 +1,34 @@
-import threading
-from core.worker import Worker
+from multiprocessing import Process
+from core.worker import worker
 
 class WorkerService:
     def __init__(self):
-        self.active_workers: dict[str, threading.Thread] = {}
-        self.stop_flags: dict[str, bool] = {}
+        self.processes: dict[str, Process] = {}
 
-    def start_worker(self, system: str, use_case: str, is_continuous: bool = False):
-        if system in self.active_workers:
-            return "Worker já está rodando"
+    def start_worker(self, system: str, use_case: str, data: dict):
+        if system in self.processes:
+            return "This system is already running!"
 
-        self.stop_flags[system] = False
+        process = Process(
+            target=worker,
+            args=(system, use_case, data),
+            daemon=True
+        )
 
-        def run():
-            while not self.stop_flags[system]:
-                worker = Worker(system, use_case)
-                worker.execute()
+        process.start()
+        self.processes[system] = process
 
-                if not is_continuous:
-                    break
-
-        thread = threading.Thread(target=run, daemon=True)
-        thread.start()
-
-        self.active_workers[system] = thread
-        return "Worker iniciado"
+        return "Worker started!"
 
     def stop_worker(self, system: str):
-        if system not in self.active_workers:
-            return "Worker não está rodando"
+        process = self.processes.get(system)
 
-        self.stop_flags[system] = True
-        del self.active_workers[system]
-        return "Worker parado"
+        if not process:
+            return "System {} not found or unavailable for stopping, please try again.".format(system)
+
+        process.terminate()
+        process.join()
+
+        del self.processes[system]
+
+        return "Worker stopped!"

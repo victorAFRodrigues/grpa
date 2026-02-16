@@ -1,5 +1,6 @@
 from time import sleep
 from random import uniform
+from selenium import webdriver
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
@@ -48,6 +49,7 @@ class SeleniumElement:
         self.__value = value
         self.__timeout = timeout
 
+
     def find(self, context=None):
         """
         Procura por um **único elemento** na página atual.
@@ -63,7 +65,6 @@ class SeleniumElement:
         Returns:
             WebElement: O elemento Selenium encontrado.
         """
-        S
 
         # Faz a busca da propriedade By com base no valor fornecido no construtor
         by = self.__BY_MAP.get(self.__by.lower(), self.__by)
@@ -318,3 +319,20 @@ class SeleniumBrowserOptions:
         service = Service(ChromeDriverManager().install())
 
         return options, service
+
+class BrowserAutomation:
+    def __init__(self):
+        self.driver = None
+
+    def __enter__(self):
+        # service = Service()  # Usa o ChromeDriver padrão no PATH
+        options, service = SeleniumBrowserOptions().chrome()
+        self.driver = webdriver.Chrome(service=service, options=options)
+        return self.driver  # Retorna o driver para uso dentro do 'with'
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if self.driver:
+            self.driver.quit()
+            return True
+        # Retorne False para propagar exceções, True para suprimir
+        return False

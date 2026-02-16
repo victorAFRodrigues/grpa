@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Text, DateTime, func
 
-from api.database.base import Base
+from api.database_descontinuado.base import Base
 
 
 class AutomationConfig(Base):

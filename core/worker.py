@@ -1,29 +1,28 @@
 import importlib
 
-from core.automation import Automation
+from core.browser_automation import BrowserAutomation
 from core.logger import Logger
-from modules.utils.general import ExecTime, DotEnv
+from modules.utils.general import DotEnv
 
-def Worker(system:str, use_case:str):
+def worker(system:str, use_case:str, data: dict):
     """
     Executa dinamicamente uma automação com base no nome da tarefa e dados fornecidos.
     Retorna uma tupla: (success: bool, error_message: str | None)
     """
     log = Logger("Worker").get_logger()
 
-    dockerRunning = DotEnv().get('DOCKER_RUNNING').lower() == "true"
+    is_container = DotEnv().get('DOCKER_MODE').lower() == "true"
 
-    if dockerRunning:
-        module_str = f"app/automations.{system}.{use_case}"
+    if is_container:
+        module_str = f"app/automations.{system}.use_cases.{use_case}"
     else:
-        module_str = f"automations.{system}.{use_case}"
+        module_str = f"automations.{system}.use_cases.{use_case}"
 
     try:
         module = importlib.import_module(module_str)
-        with Automation(use_case):
-            with ExecTime(use_case):
-                log.info(f"Iniciando automacao [{system}] - {use_case} ...")
-                result, msg = module.run(use_case)
+        with BrowserAutomation():
+            log.info(f"Iniciando automacao [{system}] - {use_case} ...")
+            result, msg = module.run(data)
 
         if result:
             msg = msg if msg else f"Tarefa {use_case} concluída com sucesso!"
