@@ -94,7 +94,7 @@ class ResourcePath:
         if hasattr(sys, '_MEIPASS'):
             base_path = sys._MEIPASS  # usado pelo PyInstaller
         else:
-            base_path = os.path.abspath(".")
+            base_path = os.path.abspath("")
         
         # resultado final
         self.result = os.path.join(base_path, relative_path)
