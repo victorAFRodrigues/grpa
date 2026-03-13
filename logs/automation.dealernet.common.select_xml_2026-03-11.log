@@ -1,0 +1,61 @@
+2026-03-11 13:37:04 [SUCCESS] Login realizado!
+2026-03-11 13:38:37 [INFO] O tempo de execução de 'select_xml' foi: 99.2008 segundos
+
+2026-03-11 13:38:45 [SUCCESS] Login realizado!
+2026-03-11 13:39:09 [ERROR] Inner "has" locator must belong to the same frame.
+2026-03-11 13:39:10 [INFO] O tempo de execução de 'select_xml' foi: 31.0164 segundos
+
+2026-03-11 13:46:48 [SUCCESS] Login realizado!
+2026-03-11 13:46:57 [ERROR] Inner "has" locator must belong to the same frame.
+2026-03-11 13:46:58 [INFO] O tempo de execução de 'select_xml' foi: 16.4184 segundos
+
+2026-03-11 13:49:11 [SUCCESS] Login realizado!
+2026-03-11 13:49:21 [INFO] O tempo de execução de 'select_xml' foi: 16.2697 segundos
+
+2026-03-11 14:12:04 [SUCCESS] Login realizado!
+2026-03-11 14:12:28 [ERROR] Locator.click: Unexpected token "]" while parsing css selector "td[colindex="10"] > a > img[title="Atualizar dados Itens Avulsos da NF"]]". Did you mean to CSS.escape it?
+Call log:
+  - waiting for #GridxmlContainerTbl > tbody > tr >> internal:has="#GridxmlContainerTbl > tbody > tr >> td[colindex=\"6\"] > span >> internal:has-text=\"3a261e15-8cf6-4906-8af8-937b4923abb7_41251073402711000166550020004686321140280567-procnfe\"i" >> nth=0 >> td[colindex="10"] > a > img[title="Atualizar dados Itens Avulsos da NF"]]
+
+2026-03-11 14:12:28 [INFO] O tempo de execução de 'select_xml' foi: 30.4352 segundos
+
+2026-03-11 14:12:56 [SUCCESS] Login realizado!
+2026-03-11 14:14:04 [ERROR] Locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("#GridxmlContainerTbl > tbody > tr").filter(has=locator("#GridxmlContainerTbl > tbody > tr").locator("td[colindex=\"6\"] > span").filter(has_text="3a261e15-8cf6-4906-8af8-937b4923abb7_41251073402711000166550020004686321140280567-procnfe")).first.locator("td[colindex=\"10\"] > a > img[title=\"Atualizar dados Itens Avulsos da NF\"]")
+
+2026-03-11 14:14:05 [INFO] O tempo de execução de 'select_xml' foi: 75.3808 segundos
+
+2026-03-11 14:18:53 [SUCCESS] Login realizado!
+2026-03-11 14:19:40 [INFO] O tempo de execução de 'select_xml' foi: 53.5841 segundos
+
+2026-03-11 14:19:48 [SUCCESS] Login realizado!
+2026-03-11 14:21:26 [SUCCESS] Login realizado!
+2026-03-11 14:21:36 [ERROR] Locator.click: Error: strict mode violation: locator("td[colindex=\"6\"] span:has-text(\"3a261e15-8cf6-4906-8af8-937b4923abb7_41251073402711000166550020004686321140280567-procnfe\")").locator("xpath=ancestor::tr").locator("td[colindex=\"10\"] img[title=\"Atualizar dados Itens Avulsos da NF\"]") resolved to 20 elements:
+    1) <img usemap="''" class="Image" id="vBTITENS_0001" src="/Resources/ActionAlterar.png" title="Atualizar dados Itens Avulsos da NF"/> aka get_by_role("row", name="Submit 295992 TRENTO LOCADORA DE VEICULOS LTDA 01/10/25 468632 GOEVO (INTEGRAÇÃO NOTAS) 3a261e15-8cf6-4906-8af8-937b4923abb7_41251073402711000166550020004686321140280567-procnfe5464123. 1.900,00 NFe Importada Atualizar dados Itens Avulsos da NF NFe Aguardando Validação Cancelar NFE", exact=True).get_by_role("link")
+    2) <img usemap="''" class="Image" id="vBTITENS_0002" src="/Resources/ActionAlterar.png" title="Atualizar dados Itens Avulsos da NF"/> aka get_by_role("row", name="Submit 295990 TRENTO LOCADORA DE VEICULOS LTDA 01/10/25 468632 GOEVO (INTEGRAÇÃO NOTAS) 3a261e15-8cf6-4906-8af8-937b4923abb7_41251073402711000166550020004686321140280567-procnfe8528476. 1.900,00 NFe Importada Atualizar dados Itens Avulsos da NF NFe Aguardando Validação Cancelar NFE", exact=True).get_by_role("link")
+    3) <img usemap="''" class="Image" id="vBTITENS_0003" src="/Resources/ActionAlterar.png" title="Atualizar dados Itens Avulsos da NF"/> aka get_by_role("row", name="Submit 295989 TRENTO LOCADORA DE VEICULOS LTDA 01/10/25 468632 GOEVO (INTEGRAÇÃO NOTAS) 3a261e15-8cf6-4906-8af8-937b4923abb7_41251073402711000166550020004686321140280567-procnfe8009860. 1.900,00 NFe Importada Atualizar dados Itens Avulsos da NF NFe Aguardando Validação Cancelar NFE", exact=True).get_by_role("link")
+    4) <img usemap="''" class="Image" id="vBTITENS_0004" src="/Resources/ActionAlterar.png" title="Atualizar dados Itens Avulsos da NF"/> aka get_by_role("row", name="Submit 290915 TRENTO LOCADORA DE VEICULOS LTDA 24/02/26 476982 GUSTAVO CARVALHO SOARES FERREIRA 41260273402711000166550020004769821246829243-procnfe312230. 1.665,43 NFe Processada Atualizar dados Itens Avulsos da NF NFe Processada", exact=True).get_by_role("link")
+    5) <img usemap="''" class="Image" id="vBTITENS_0005" src="/Resources/ActionAlterar.png" title="Atualizar dados Itens Avulsos da NF"/> aka locator("#GridxmlContainerRow_0005").get_by_role("link", name="Atualizar dados Itens Avulsos")
+    6) <img usemap="''" class="Image" id="vBTITENS_0006" src="/Resources/ActionAlterar.png" title="Atualizar dados Itens Avulsos da NF"/> aka locator("#GridxmlContainerRow_0006").get_by_role("link", name="Atualizar dados Itens Avulsos")
+    7) <img usemap="''" class="Image" id="vBTITENS_0007" src="/Resources/ActionAlterar.png" title="Atualizar dados Itens Avulsos da NF"/> aka locator("#GridxmlContainerRow_0007 > td:nth-child(11) > a")
+    8) <img usemap="''" class="Image" id="vBTITENS_0008" src="/Resources/ActionAlterar.png" title="Atualizar dados Itens Avulsos da NF"/> aka locator("#GridxmlContainerRow_0008 > td:nth-child(11) > a")
+    9) <img usemap="''" class="Image" id="vBTITENS_0009" src="/Resources/ActionAlterar.png" title="Atualizar dados Itens Avulsos da NF"/> aka locator("#GridxmlContainerRow_0009 > td:nth-child(11) > a")
+    10) <img usemap="''" class="Image" id="vBTITENS_0010" src="/Resources/ActionAlterar.png" title="Atualizar dados Itens Avulsos da NF"/> aka locator("#GridxmlContainerRow_0010 > td:nth-child(11) > a")
+    ...
+
+Call log:
+  - waiting for locator("td[colindex=\"6\"] span:has-text(\"3a261e15-8cf6-4906-8af8-937b4923abb7_41251073402711000166550020004686321140280567-procnfe\")").locator("xpath=ancestor::tr").locator("td[colindex=\"10\"] img[title=\"Atualizar dados Itens Avulsos da NF\"]")
+
+2026-03-11 14:21:37 [INFO] O tempo de execução de 'select_xml' foi: 16.5145 segundos
+
+2026-03-11 14:23:54 [SUCCESS] Login realizado!
+2026-03-11 14:24:36 [ERROR] Locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("td[colindex=\"6\"] span:has-text(\"3a261e15-8cf6-4906-8af8-937b4923abb7_41251073402711000166550020004686321140280567-procnfe\")").first.locator("td[colindex=\"6\"] span:has-text(\"3a261e15-8cf6-4906-8af8-937b4923abb7_41251073402711000166550020004686321140280567-procnfe\")").locator("xpath=ancestor::tr").locator("td[colindex=\"10\"] img[title=\"Atualizar dados Itens Avulsos da NF\"]").first
+
+2026-03-11 14:24:36 [INFO] O tempo de execução de 'select_xml' foi: 48.7117 segundos
+
+2026-03-11 14:25:35 [SUCCESS] Login realizado!
+2026-03-11 14:27:18 [INFO] O tempo de execução de 'select_xml' foi: 109.4417 segundos
+

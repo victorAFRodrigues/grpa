@@ -1,0 +1,8 @@
+2026-03-11 10:01:10 [WARNING] A filial com numero 19 não foi encontrada. Sera mantida a filial TRENTO LOCADORA durante a execucao da task
+2026-03-11 10:01:10 [ERROR] A filial com numero 19 não foi encontrada. Sera mantida a filial TRENTO LOCADORA durante a execucao da task
+2026-03-11 10:01:10 [SUCCESS] Login realizado!
+2026-03-11 10:01:17 [ERROR] Elemento '#span_PESSOA_CODIGO_0001' não encontrado.
+2026-03-11 10:01:17 [ERROR] Fornecedor não encontrado!
+2026-03-11 10:01:17 [ERROR] Elemento '#span_PESSOA_CODIGO_0001' não encontrado.
+2026-03-11 10:01:17 [INFO] O tempo de execução de 'validar_fornecedor' foi: 14.3720 segundos
+

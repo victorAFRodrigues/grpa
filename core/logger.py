@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from loguru import logger
 import sys
 import os
@@ -6,16 +8,17 @@ from datetime import datetime
 
 class Logger:
 
-    def __init__(self, app_name, log_dir="../logs"):
+    def __init__(self, app_name, log_dir="logs"):
         self.app_name = app_name
-        self.log_dir = log_dir
 
-        os.makedirs(log_dir, exist_ok=True)
+        # raiz do projeto
+        ROOT_DIR = Path(__file__).resolve().parents[1]
 
-        log_file = os.path.join(
-            log_dir,
-            f"{app_name}_{datetime.now().strftime('%Y-%m-%d')}.log"
-        )
+        # pasta logs sempre na raiz
+        self.log_dir = ROOT_DIR / log_dir
+        self.log_dir.mkdir(exist_ok=True)
+
+        log_file = self.log_dir / f"{app_name}_{datetime.now().strftime('%Y-%m-%d')}.log"
 
         logger.remove()
 
@@ -44,9 +47,7 @@ class Logger:
 
 
 if __name__ == "__main__":
-    log = Logger("RPA").get_logger()
-    log.info("Hello World")
-    log.warning("Hello World")
-    log = Logger("RPA2").get_logger()
-    log.error("Hello World")
-    log.success("Hello World")
+    log1 = Logger("A").get_logger()
+    log2 = Logger("B").get_logger()
+
+    log1.info("Teste")

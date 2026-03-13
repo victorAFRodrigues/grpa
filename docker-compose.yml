@@ -1,26 +1,30 @@
 services:
-  taskwave_worker:
-    image: winterowner/taskwave_worker:v0.1.0
-    env_file: .env
-    container_name: taskwave_worker
-    environment:
-      CHROME_BIN: /usr/bin/google-chrome
-      CHROMEDRIVER_PATH: /usr/local/bin/chromedriver
-      DOCKER_MODE: "true"
-    ports:
-      - "5000:5000"
-    shm_size: 750m # 1gb
+  rpaExecutor01:
+    # image: grpa_lelac:v2.0.0
+    build: .
+    container_name: GRPA_001
     restart: unless-stopped
+    environment:
+      - ENV=docker
+      - RPA_EXECUTOR=GRPAE_001
+    shm_size: 750m
+    volumes:
+      - ./automations/GRPAE_001:/app/automations
+      - ./screenshots/GRPAE_001:/app/screenshots
+      - ./logs/GRPAE_001:/app/logs
+  rpaExecutor02:
+    # image: grpa_lelac:v2.0.0
+    build: .
+    container_name: GRPA_002
+    restart: unless-stopped
+    environment:
+      - ENV=docker
+      - RPA_EXECUTOR=GRPAE_002
+    shm_size: 750m
+    volumes:
+      - ./automations/GRPAE_002:/app/automations
+      - ./screenshots/GRPAE_002:/app/screenshots
+      - ./logs/GRPAE_002:/app/logs
+volumes:
+  worker-data:
 
-#  OLD
-#  rpaExecutor01:
-#    image: winterowner/grpa_lelac:latest
-#    container_name: GRPAE_01
-#    env_file: .env
-#    environment:
-#      RPA_EXECUTOR: GRPAE_01
-#      CHROME_BIN: /usr/bin/google-chrome
-#      CHROMEDRIVER_PATH: /usr/local/bin/chromedriver
-#      DOCKER_MODE: "true"
-#    shm_size: 750m # 1gb
-#    restart: unless-stopped

@@ -1,0 +1,47 @@
+{
+  "itens": [
+    {
+      "item_avulso": "12",
+      "descricao": "SERVIÇO DE LIMPEZA CUSTO MENSAL FIXO",
+      "quantidade": "1",
+      "valor_unitario": "19500",
+      "valor_total": "19500",
+      "unidade": "unidade",
+      "departamento": "1",
+      "conta_gerencial": ""
+    }
+  ],
+  "filial": "19",
+  "numero_nf": "000000015",
+  "serie": "900",
+  "data_emissao": "03/02/2026",
+  "codigo_fornecedor": "1",
+  "natureza_operacao": "18",
+  "tipo_documento": "36",
+  "conta_gerencial": "77",
+  "departamento": "1",
+  "condicao_pagamento": "57",
+  "valor_total": "19500",
+  "observacao": "Referente ao contrato de salário dos funcionários lava car",
+  "codigo_verificacao": "41069022261489304000159000000000001526020510",
+  "parcelas": [
+    {
+      "valor": "9750",
+      "data_vencimento": "04/03/2026",
+      "tipo_titulo": "128"
+    },
+    {
+      "valor": "9750",
+      "data_vencimento": "04/04/2026",
+      "tipo_titulo": "128"
+    }
+  ],
+  "rateio": [
+    {
+      "empresa": "19",
+      "departamento": "1",
+      "conta_gerencial": "77",
+      "valor": "19500"
+    }
+  ]
+}

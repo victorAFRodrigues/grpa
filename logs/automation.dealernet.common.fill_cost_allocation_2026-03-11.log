@@ -1,0 +1,78 @@
+2026-03-11 17:36:23 [ERROR] Elemento '#W0038TABLECENTRO' não encontrado.
+2026-03-11 17:36:24 [INFO] O tempo de execução de 'fill_cost_allocation' foi: 10.1749 segundos
+
+2026-03-11 17:36:55 [SUCCESS] Login realizado!
+2026-03-11 17:37:47 [SUCCESS] Capa da nota preenchida com sucesso!
+2026-03-11 17:38:15 [SUCCESS] Item da nota cadastrado com sucesso!
+2026-03-11 17:39:18 [ERROR] Não foi possivel realizar o rateio, erro: Locator.select_option: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("select[id=\"vNOTAFISCALRATEIODEP_EMPRESACOD\"]").first
+    - locator resolved to <select class="Attribute" onblur=";gx.evt.onblur(83);" onchange="gx.evt.onchange(this)" id="vNOTAFISCALRATEIODEP_EMPRESACOD" name="vNOTAFISCALRATEIODEP_EMPRESACOD" onfocus="gx.evt.onfocus(this, 83,'',false,'',0)" gxoch0="if(!(gx.evt.jsEvent(this))) return false;">…</select>
+  - attempting select option action
+    2 × waiting for element to be visible and enabled
+      - did not find some options
+    - retrying select option action
+    - waiting 20ms
+    2 × waiting for element to be visible and enabled
+      - did not find some options
+    - retrying select option action
+      - waiting 100ms
+    59 × waiting for element to be visible and enabled
+       - did not find some options
+     - retrying select option action
+       - waiting 500ms
+
+2026-03-11 17:39:18 [INFO] O tempo de execução de 'fill_cost_allocation' foi: 150.7749 segundos
+
+2026-03-11 17:39:39 [SUCCESS] Login realizado!
+2026-03-11 17:40:32 [SUCCESS] Capa da nota preenchida com sucesso!
+2026-03-11 17:40:58 [SUCCESS] Item da nota cadastrado com sucesso!
+2026-03-11 17:41:36 [ERROR] Não foi possivel realizar o rateio, erro: Locator.select_option: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("select[id=\"vNOTAFISCALRATEIODEP_EMPRESACOD\"]").first
+    - locator resolved to <select class="Attribute" onblur=";gx.evt.onblur(83);" onchange="gx.evt.onchange(this)" id="vNOTAFISCALRATEIODEP_EMPRESACOD" name="vNOTAFISCALRATEIODEP_EMPRESACOD" onfocus="gx.evt.onfocus(this, 83,'',false,'',0)" gxoch0="if(!(gx.evt.jsEvent(this))) return false;">…</select>
+  - attempting select option action
+    2 × waiting for element to be visible and enabled
+      - did not find some options
+    - retrying select option action
+    - waiting 20ms
+    2 × waiting for element to be visible and enabled
+      - did not find some options
+    - retrying select option action
+      - waiting 100ms
+    59 × waiting for element to be visible and enabled
+       - did not find some options
+     - retrying select option action
+       - waiting 500ms
+
+2026-03-11 17:41:36 [INFO] O tempo de execução de 'fill_cost_allocation' foi: 124.8493 segundos
+
+2026-03-11 17:43:14 [SUCCESS] Login realizado!
+2026-03-11 17:44:08 [SUCCESS] Capa da nota preenchida com sucesso!
+2026-03-11 17:44:34 [SUCCESS] Item da nota cadastrado com sucesso!
+2026-03-11 17:44:39 [ERROR] Não foi possivel realizar o rateio, erro: Elemento '//*[@id="IMGINSERT"]' não encontrado.
+2026-03-11 17:44:39 [INFO] O tempo de execução de 'fill_cost_allocation' foi: 92.3782 segundos
+
+2026-03-11 17:45:18 [SUCCESS] Login realizado!
+2026-03-11 17:46:10 [SUCCESS] Capa da nota preenchida com sucesso!
+2026-03-11 17:46:36 [SUCCESS] Item da nota cadastrado com sucesso!
+2026-03-11 17:47:33 [ERROR] Não foi possivel realizar o rateio, erro: Locator.select_option: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("select[id=\"vNOTAFISCALRATEIODEP_DEPARTAMENTOCOD\"]").first
+    - locator resolved to <select class="Attribute" onblur=";gx.evt.onblur(88);" onchange="gx.evt.onchange(this)" id="vNOTAFISCALRATEIODEP_DEPARTAMENTOCOD" name="vNOTAFISCALRATEIODEP_DEPARTAMENTOCOD" onfocus="gx.evt.onfocus(this, 88,'',false,'',0)" gxoch0="if(!(gx.evt.jsEvent(this))) return false;">…</select>
+  - attempting select option action
+    2 × waiting for element to be visible and enabled
+      - did not find some options
+    - retrying select option action
+    - waiting 20ms
+    2 × waiting for element to be visible and enabled
+      - did not find some options
+    - retrying select option action
+      - waiting 100ms
+    59 × waiting for element to be visible and enabled
+       - did not find some options
+     - retrying select option action
+       - waiting 500ms
+
+2026-03-11 17:47:34 [INFO] O tempo de execução de 'fill_cost_allocation' foi: 143.1948 segundos
+
