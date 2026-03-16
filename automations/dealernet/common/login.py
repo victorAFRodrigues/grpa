@@ -1,4 +1,6 @@
 from json import load
+from time import sleep
+
 from automations.dealernet.common import switch_filial
 from core.browser_automation import PlaywrightElement, BrowserAutomation
 from core.logger import Logger
@@ -18,6 +20,7 @@ def run (page, log, data=None):
         page.goto(DEALERNET_URL)
 
         page.fill("#vUSUARIO_IDENTIFICADORALTERNATIVO", USER)
+        sleep(0.5)
         page.fill("#vUSUARIOSENHA_SENHA", PASSWORD)
         page.click("input[id=IMAGE3]")
 

@@ -1,5 +1,7 @@
 import json
 from datetime import datetime
+from time import sleep
+
 from automations.dealernet.common import login
 from core.browser_automation import BrowserAutomation, PlaywrightElement
 from core.logger import Logger
@@ -24,7 +26,7 @@ def run(page, log, data):
         insert_btn.click()
 
         # fill row 1 the form
-        PlaywrightElement(page, '#vNOTAFISCAL_NUMERO').action('write' , data['numero_nf'])
+        PlaywrightElement(page, '#vNOTAFISCAL_NUMERO', 4000).action('write' , data['numero_nf'])
         PlaywrightElement(page, '#vNOTAFISCAL_SERIE').action('write' , data['serie'])
         PlaywrightElement(page, '#vNOTAFISCAL_DATAMOVIMENTO').action('write' , date)
 
@@ -45,6 +47,7 @@ def run(page, log, data):
 
         # fill row 5 the form
         PlaywrightElement(page, '#NATOPE').action('click')
+        sleep(0.4)
         select = PlaywrightElement(page, '#vNOTAFISCAL_NATUREZAOPERACAOCOD')
         select.find().select_option(str(int(data["natureza_operacao"])))
         PlaywrightElement(page, '#CONFIRMAR').action('click')
@@ -59,9 +62,9 @@ def run(page, log, data):
             pass
 
         # fill row 6 the form
-        PlaywrightElement(page, '#TIPODOC').action('click')
+        PlaywrightElement(page, '#TIPODOC',1000).action('click')
         try:
-            select = PlaywrightElement(page, '#vNOTAFISCAL_TIPODOCUMENTOCOD').find()
+            select = PlaywrightElement(page, '#vNOTAFISCAL_TIPODOCUMENTOCOD', 1000).find()
             select.select_option(value=data["tipo_documento"])
         except:
             pass

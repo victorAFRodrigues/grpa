@@ -9,11 +9,8 @@ def run(page, log, data):
 
     parcelas = data["parcelas"]
 
-    if len(parcelas) < 2:
-        return True
-
     try:
-        PlaywrightElement(page, '//*[@id="PARCELA"]').action('click')
+        PlaywrightElement(page, '//*[@id="PARCELA"]', 4000).action('click')
 
         btn_insert = PlaywrightElement(page, '//*[@id="INSERT"]').find()
         btn_insert.wait_for()
