@@ -10,5 +10,6 @@ dependencies = [
     "loguru>=0.7.3",
     "playwright>=1.58.0",
     "pydantic>=2.12.5",
+    "python-dotenv>=1.2.1",
     "requests>=2.32.5",
 ]

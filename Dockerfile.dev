@@ -1,15 +1,12 @@
-FROM python:3.14-slim
+FROM mcr.microsoft.com/playwright/python:v1.58.0-jammy
+
+RUN rm -rf /ms-playwright/firefox*
+RUN rm -rf /ms-playwright/webkit*
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1
 
 WORKDIR /app
-
-# Instala o Playwright
-RUN pip install --no-cache-dir playwright
-
-# Instala o browser
-RUN playwright install chromium
 
 # Instala uv
 RUN pip install --no-cache-dir uv==0.10.2
