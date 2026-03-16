@@ -3,8 +3,8 @@ from automations.dealernet.common import login, import_xml, select_xml, categori
     fill_pre_product_invoice_cover, fill_product_invoice_cover, fill_installments, fill_cost_allocation, select_invoice
 from core.browser_automation import BrowserAutomation, PlaywrightElement
 from core.logger import Logger
-from modules.utils.general.exectime import ExecTime
 from modules.utils.general.xml import Xml
+from modules.utils.general.exectime import ExecTime
 
 def run(page, log, data):
 
@@ -15,7 +15,7 @@ def run(page, log, data):
 
 
     try:
-        login.run(page, log, data) #
+        login.run(page, log)
 
         import_xml.run(page, log, xml_path)
 
@@ -32,7 +32,7 @@ def run(page, log, data):
         if len(data['parcelas']) > 1:
             fill_installments.run(page, log, data)
 
-        if len(data['rateio']) > 1 or data['filial'] != '19':
+        if len(data['rateio']) > 1:
             fill_cost_allocation.run(page, log, data)
 
         PlaywrightElement(page, '//*[@id="CONFIRMA"]', 4000).action('click')
@@ -51,15 +51,14 @@ def run(page, log, data):
 
 
 if __name__ == '__main__':
-    _log = Logger("automations.dealernet.use_cases.cadastro_nf_produto").get_logger()
-    # _log = Logger("automations.dealernet.use_cases.validar_fornecedor").get_logger()
+    _log = Logger("automations.dealernet.use_cases.cadastrar_nf_produto").get_logger()
 
-    path = f'../data/cadastro_nf_produto.json'
+    path = f'../data/cadastrar_nf_produto.json'
 
     with open(path, "r", encoding="utf-8") as file:
         _data = load(file)
 
-    with ExecTime(_log, 'cadastro_nf_produto'):
+    with ExecTime(_log, 'cadastrar_nf_produto'):
         with BrowserAutomation() as _page:
             try:
                 run(_page, _log, _data)

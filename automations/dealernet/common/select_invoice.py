@@ -21,20 +21,18 @@ def run(page, log, data):
         select.find().select_option('PEN')
         PlaywrightElement(page, '#IMGREFRESH').action('click')
 
-        PlaywrightElement(page, '#GridContainerTbl', 3000).find()
+        grid = page.locator('#GridContainerTbl tbody tr')
+        grid.wait_for()
 
-        cell = PlaywrightElement(page, f'td[colindex="4"] span:has-text("{data["numero_nf"]}")').find_many()
+        row = grid.filter(
+            has=page.locator('td[colindex="6"] span', has_text='pendente')
+        )
 
-        cell = cell.nth(0)
+        if row.count() > 0:
+            row.locator(
+                'td[colindex="1"] input'
+            ).click()
 
-        button = cell.locator(
-            'xpath=ancestor::tr'
-        ).locator(
-            'td[colindex="1"] input'
-        ).first
-
-        if button:
-            button.click()
         else:
             raise Exception("Nenhuma nota 'pendente' estava disponível")
 
@@ -49,7 +47,7 @@ def run(page, log, data):
 if __name__ == '__main__':
     _log = Logger("automations.dealernet.common.select_invoice").get_logger()
 
-    path = f'../data/cadastro_nf_produto.json'
+    path = f'../data/cadastrar_nf_produto.json'
 
     with open(path, "r", encoding="utf-8") as file:
         _data = json.load(file)

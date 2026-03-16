@@ -1,8 +1,0 @@
-2026-03-12 16:01:02 [INFO] iniciando emissao de cnd
-2026-03-12 16:01:03 [INFO] preenche corretamente cnpj
-2026-03-12 16:01:36 [ERROR] Locator.click: Timeout 30000ms exceeded.
-Call log:
-  - waiting for locator("iframe[name=\"77A935BDEA1E5F07A99B54552AF098A1\"]").content_frame.get_by_role("button", name="Baixar")
-
-2026-03-12 16:01:37 [INFO] O tempo de execução de 'emissao_cnd' foi: 36.1564 segundos
-

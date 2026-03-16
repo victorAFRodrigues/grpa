@@ -1,7 +1,3 @@
-# =============================
-# Dockerfile
-# =============================
-
 FROM mcr.microsoft.com/playwright/python:v1.58.0-jammy
 
 ENV PYTHONUNBUFFERED=1 \
@@ -10,13 +6,13 @@ ENV PYTHONUNBUFFERED=1 \
 WORKDIR /app
 
 # Instala uv
-RUN pip install --no-cache-dir uv
+RUN pip install --no-cache-dir uv==0.10.2
 
 # Copia deps primeiro (cache)
 COPY pyproject.toml uv.lock ./
 
 # Instala dependências
-RUN uv sync --system --frozen
+RUN uv sync --frozen
 
 # Copia aplicação
 COPY . .
@@ -25,6 +21,9 @@ COPY . .
 RUN mkdir -p /app/temp && chmod 700 /app/temp
 
 ENV TMPDIR=/app/temp
+
+RUN useradd -m appuser
+USER appuser
 
 # Healthcheck simples
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \

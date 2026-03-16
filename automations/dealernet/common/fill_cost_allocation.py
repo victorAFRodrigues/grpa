@@ -24,15 +24,13 @@ def run(page, log, data):
 
         for rateio_i in rateio:
 
-            select = PlaywrightElement(page, 'select[id="vNOTAFISCALRATEIODEP_EMPRESACOD"]', 5000)
+            select = PlaywrightElement(page, 'select[id="vNOTAFISCALRATEIODEP_EMPRESACOD"]')
             select.find().select_option(rateio_i['empresa'])
 
             select = PlaywrightElement(page, 'select[id="vNOTAFISCALRATEIODEP_DEPARTAMENTOCOD"]')
             select.find().select_option(rateio_i['departamento'])
 
             select = PlaywrightElement(page, 'select[id="vCONTAGERENCIAL_CODIGO"]')
-            # select = PlaywrightElement(page, 'select[id="vCONTAGERENCIAL_CODIGO"]')
-            # vCONTAGERENCIAL_CODIGO
             select.find().select_option(rateio_i['conta_gerencial'])
 
             PlaywrightElement(page, '//*[@id="vNOTAFISCALRATEIODEP_VALOR"]').action('write',  rateio_i['valor'])
@@ -59,7 +57,7 @@ def run(page, log, data):
 if __name__ == '__main__':
     _log = Logger('automation.dealernet.common.fill_cost_allocation').get_logger()
 
-    path = f'../data/cadastro_nf_servico.json'
+    path = f'../data/cadastrar_nf_servico.json'
 
     with open(path, "r", encoding="utf-8") as file:
         _data = load(file)

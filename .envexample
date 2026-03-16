@@ -15,8 +15,9 @@
 API_URL= # URL base da API utilizada pelas automações. (OBRIGATÓRIO)
 GOEVO_APP_TPTOKEN= # Token de autenticação do app no GOEVO (OBRIGATÓRIO)
 RPA_EXECUTOR=SRV_RPA_001 # Identificador do executor RPA (nome do servidor ou agente)
-ENV='X' # "docker"
-GRPA_VERSION='1.0.3'
+GRPA_AUTOMATION_VERSION='2.0.0.20260306' # Identificador da versão que será usada nos modulos de automação(OBRIGATÓRIO)
+ENV='DOCKER' # Identificador se está rodando via docker ou não [usado para trocar o modo headless do modo com janela] (OPCIONAL)
+
 
 
 # =================== #

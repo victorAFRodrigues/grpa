@@ -58,5 +58,5 @@ class Updater:
 
             print("Updating version:", version)
 
-            DotEnv().set('GRPA_VERSION', version)
+            DotEnv().set('GRPA_AUTOMATION_VERSION', version)
 

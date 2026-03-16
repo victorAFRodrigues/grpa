@@ -61,14 +61,6 @@ class Main:
 if __name__ == '__main__':
     m = Main()
     env = DotEnv()
-    # env.set('ENV', 'docker')
-
-    # sources = ['cadastro_nf_produto', 'cadastro_nf_servico', 'validar_fornecedor']
-    # __system = env.get('APPLICATION')
-    # __use_case = sources[2]
-    # path = f'automations/{__system}/data/{__use_case}.json'
-    #
-    # with open(path, "r", encoding="utf-8") as file:
-    #     __data = load(file)
+    env.set('ENV', 'docker')
 
     m.test()

@@ -1,5 +1,7 @@
 from json import dumps
 import json
+from numbers import Number
+
 import requests
 from core.updater import Updater
 from modules.utils.general.dotenv import DotEnv
@@ -74,10 +76,11 @@ class Api:
         return json.loads(response.json()['content'])
 
     def search_update(self):
+
         payload = UpdateAutomationsModel(
             RPA_EXECUTOR=DotEnv().get("RPA_EXECUTOR"),
             RPA_NAME=DotEnv().get("APPLICATION").upper(),
-            RPA_VERSION=DotEnv().get("GRPA_VERSION")
+            RPA_VERSION=DotEnv().get("GRPA_AUTOMATION_VERSION")
         ).model_dump()
 
         response = requests.post(

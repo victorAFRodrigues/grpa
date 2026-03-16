@@ -37,14 +37,14 @@ def run(page, log, data):
 
 
 if __name__ == '__main__':
-    _log = Logger("automations.dealernet.use_cases.cadastro_nf_servico").get_logger()
+    _log = Logger("automations.dealernet.use_cases.cadastrar_nf_servico").get_logger()
 
-    path = f'../data/cadastro_nf_produto.json'
+    path = f'../data/cadastrar_nf_produto.json'
 
     with open(path, "r", encoding="utf-8") as file:
         _data = load(file)
 
-    with ExecTime(_log, 'cadastro_nf_servico'):
+    with ExecTime(_log, 'cadastrar_nf_servico'):
         with BrowserAutomation() as _page:
             try:
                 run(_page, _log, _data)
