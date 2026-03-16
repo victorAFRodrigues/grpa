@@ -21,14 +21,18 @@ def run (page, log, data=None):
         page.fill("#vUSUARIOSENHA_SENHA", PASSWORD)
         page.click("input[id=IMAGE3]")
 
-        PlaywrightElement(page, "#W0038TABLECENTRO", 4000).find()
+        PlaywrightElement(page, "#W0038TABLECENTRO", 6000).find()
 
-        if data:
-            try:
-                switch_filial.run(page, log, data['filial'])
-            except Exception as ex:
-                log.error(ex)
-                pass
+        if data is not None:
+            filial = data.get("filial")
+
+            if filial:
+                try:
+                    switch_filial.run(page, log, filial)
+                except Exception as ex:
+                    log.error(ex)
+                    pass
+
 
         log.success("Login realizado!")
 

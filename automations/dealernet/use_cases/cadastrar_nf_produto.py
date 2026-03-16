@@ -3,8 +3,8 @@ from automations.dealernet.common import login, import_xml, select_xml, categori
     fill_pre_product_invoice_cover, fill_product_invoice_cover, fill_installments, fill_cost_allocation, select_invoice
 from core.browser_automation import BrowserAutomation, PlaywrightElement
 from core.logger import Logger
-from modules.utils.general.xml import Xml
 from modules.utils.general.exectime import ExecTime
+from modules.utils.general.xml import Xml
 
 def run(page, log, data):
 
@@ -15,7 +15,7 @@ def run(page, log, data):
 
 
     try:
-        login.run(page, log)
+        login.run(page, log, data) #
 
         import_xml.run(page, log, xml_path)
 
@@ -32,7 +32,7 @@ def run(page, log, data):
         if len(data['parcelas']) > 1:
             fill_installments.run(page, log, data)
 
-        if len(data['rateio']) > 1:
+        if len(data['rateio']) > 1 or data['filial'] != '19':
             fill_cost_allocation.run(page, log, data)
 
         PlaywrightElement(page, '//*[@id="CONFIRMA"]', 4000).action('click')

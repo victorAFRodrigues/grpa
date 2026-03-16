@@ -105,7 +105,7 @@ def run(page, log, data):
 if __name__ == '__main__':
     _log = Logger("automations.dealernet.common.fill_service_invoice_cover").get_logger()
 
-    path = f'../data/cadastrar_nf_servico.json'
+    path = f'../data/cadastro_nf_servico.json'
 
     with open(path, "r", encoding="utf-8") as file:
         _data = json.load(file)

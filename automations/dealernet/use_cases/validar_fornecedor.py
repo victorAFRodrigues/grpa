@@ -2,12 +2,13 @@ from json import load
 from automations.dealernet.common import login, validate_supplier
 from core.browser_automation import BrowserAutomation
 from core.logger import Logger
-from modules.utils.general import ExecTime
+from modules.utils.general.exectime import ExecTime
 
 
 def run(page, log, data):
 
     try:
+
         login.run(page, log, data)
 
         ret = validate_supplier.run(page, log, data['cnpj'])

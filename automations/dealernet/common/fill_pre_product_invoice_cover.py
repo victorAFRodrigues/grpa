@@ -16,7 +16,7 @@ def run(page, log, data):
 
     try:
         # fill row 1 the form
-        select = PlaywrightElement(page, '#vNOTAFISCAL_GRUPOMOVIMENTO')
+        select = PlaywrightElement(page, '#vNOTAFISCAL_GRUPOMOVIMENTO', 5000)
         select.find().select_option('COM')
 
         # fill row 2 the form
@@ -38,25 +38,14 @@ def run(page, log, data):
             pass
         PlaywrightElement(page, '#CONFIRMAR').action('click')
 
-        # Fill in the remaining fields.'
+        # Fill in the remaining fields.
         try:
             PlaywrightElement(page,'#vNOTAFISCAL_CONTAGERENCIALCOD').action('write', data["conta_gerencial"])
         except:
             pass
 
-        try:
-            select = PlaywrightElement(page, '#vNOTAFISCAL_INDICADORPRESENCA')
-            select.find().select_option("0")
-        except:
-            pass
-
-        PlaywrightElement(page, '#TIPODOC').action('click')
-        try:
-            select = PlaywrightElement(page, '#vNOTAFISCAL_TIPODOCUMENTOCOD').find()
-            select.select_option(value=data["tipo_documento"])
-        except:
-            pass
-        PlaywrightElement(page, '#CONFIRMAR').action('click')
+        select = PlaywrightElement(page, '#vNOTAFISCAL_DEPARTAMENTOCOD')
+        select.find().select_option(data["rateio"][0]['departamento'])
 
         select = PlaywrightElement(page, '#vNOTAFISCAL_CONDICAOPAGAMENTOCOD')
         select.find().select_option(data["condicao_pagamento"])
@@ -64,34 +53,24 @@ def run(page, log, data):
         select = PlaywrightElement(page, '#vAGENTECOBRADOR_CODIGO')
         select.find().select_option('10')
 
-        PlaywrightElement(page, '//*[@id="vISUTILIZAREGRATRIBUTOICMSPISCOFINS"]').action('click')
+        PlaywrightElement(page, '#vISUTILIZAREGRATRIBUTOICMSPISCOFINS').action('click')
+        # PlaywrightElement(page, '#vISUTILIZAREGRATRIBUTOSOMENTEPISCOFINS').action('click')
 
-        PlaywrightElement(page, '//*[@id="IMGPROCESSAR"]').action('click')
+        try:
+            select = PlaywrightElement(page, '#vNOTAFISCAL_INDICADORPRESENCA')
+            select.find().select_option("0")
+        except:
+            pass
 
-        if data['codigo_verificacao'] != '':
-            cod_verificacao = ''
+        PlaywrightElement(page, '#IMGPROCESSAR').action('click')
 
-            try:
-                cod_verificacao = PlaywrightElement(page, '#vNOTAFISCAL_CHAVENFE').find()
-                if not cod_verificacao.is_visible():
-                    raise Exception()
-            except:
-                cod_verificacao = PlaywrightElement(page, '#vNOTAFISCAL_CODIGOVERIFICACAO').find()
-                if not cod_verificacao.is_visible():
-                    raise Exception()
-                else:
-                    pass
-            finally:
-                if cod_verificacao.is_visible():
-                    cod_verificacao.fill(data['codigo_verificacao'])
+        err = PlaywrightElement(page, '#gxErrorViewer > div:nth-child(1)', 10000).find()
 
-        err = PlaywrightElement(page, '//*[@id="gxErrorViewer"]/div[1]', 6000).find()
+        if err:
+            err_msg = err.inner_text().strip()
 
-        if not err.is_visible():
-            raise Exception("A mensagem de aviso de processamento da nota nao foi acionada, verifique.")
-
-        if not err.inner_text().strip() == 'Nota Fiscal Processada com Sucesso':
-            raise Exception("Ocorreu algum erro durante a execucao, verifique.")
+            if not err_msg == 'Nota Fiscal Processada com Sucesso':
+                raise Exception(err_msg)
 
         log.success("Capa da nota preenchida com sucesso!")
 
@@ -104,7 +83,7 @@ def run(page, log, data):
 if __name__ == '__main__':
     _log = Logger("automations.dealernet.common.fill_pre_product_invoice_cover").get_logger()
 
-    path = f'../data/cadastrar_nf_produto.json'
+    path = f'../data/cadastro_nf_produto.json'
 
     with open(path, "r", encoding="utf-8") as file:
         _data = json.load(file)

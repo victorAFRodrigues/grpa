@@ -5,6 +5,7 @@ from core.logger import Logger
 from modules.utils.general.exectime import ExecTime
 
 
+
 def run (page, log, filial):
     try:
         PlaywrightElement(page, '#ext-gen67').action('click')

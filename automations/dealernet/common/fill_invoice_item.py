@@ -37,7 +37,7 @@ def run(page, log, data):
 if __name__ == '__main__':
     _log = Logger("automations.dealernet.use_cases.fill_invoice_item").get_logger()
 
-    path = f'../data/cadastrar_nf_produto.json'
+    path = f'../data/cadastro_nf_produto.json'
 
     with open(path, "r", encoding="utf-8") as file:
         _data = load(file)

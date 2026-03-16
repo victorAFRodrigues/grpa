@@ -18,24 +18,25 @@ def run(page, log, data):
     xml_filename = data["nfexml_filename"].replace('.xml','')
     
     try:
-        PlaywrightElement(page, '//*[@id="vINTEGRACAOXMLNF_DATAEMISSAOINICIAL"]').action('write', data_emissao)
-        PlaywrightElement(page, '//*[@id="vINTEGRACAOXMLNF_DATAEMISSAOFINAL"]').action('write', last_month_day)
-        PlaywrightElement(page, '//*[@id="IMAGE2"]').action('click')
 
-        grid = page.locator('#GridxmlContainerTbl tbody tr')
-        grid.wait_for()
+        PlaywrightElement(page, '#vINTEGRACAOXMLNF_DATAEMISSAOINICIAL').action('write', data_emissao)
+        PlaywrightElement(page, '#vINTEGRACAOXMLNF_DATAEMISSAOFINAL').action('write', last_month_day)
+        PlaywrightElement(page, '#IMAGE2').action('click')
 
-        row = grid.filter(
-            has=page.locator('td[colindex="6"] span', has_text=xml_filename)
-        )
+        PlaywrightElement(page, '#GridxmlContainerTbl', 3000).find()
 
-        if row.count() > 0:
-            row.locator(
-                'td[colindex="10"] a img[title="Atualizar dados Itens Avulsos da NF"]'
-            ).click()
+        cell = PlaywrightElement(page, f'td[colindex="6"] span:has-text("{xml_filename}")').find()
 
-            log.success('XML encontrado e selecionado.')
-            log.info('Direcionando para a tela de preenchimento da capa da nota...')
+        button = cell.locator(
+            'xpath=ancestor::tr'
+        ).locator(
+            'td[colindex="10"] img[title="Atualizar dados Itens Avulsos da NF"]'
+        ).first
+
+        button.click()
+
+        log.success('XML encontrado e selecionado.')
+        log.info('Direcionando para a tela de preenchimento da capa da nota...')
 
     except Exception as e:
         log.error(e)
@@ -45,7 +46,7 @@ def run(page, log, data):
 if __name__ == '__main__':
     _log = Logger('automation.dealernet.common.select_xml').get_logger()
 
-    path = f'../data/cadastrar_nf_produto.json'
+    path = f'../data/cadastro_nf_produto.json'
 
     with open(path, "r", encoding="utf-8") as file:
         _data = load(file)

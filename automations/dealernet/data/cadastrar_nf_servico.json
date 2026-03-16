@@ -18,7 +18,7 @@
   "codigo_fornecedor": "1",
   "natureza_operacao": "18",
   "tipo_documento": "36",
-  "conta_gerencial": "179",
+  "conta_gerencial": "77",
   "departamento": "1",
   "condicao_pagamento": "57",
   "valor_total": "19500",
@@ -38,16 +38,10 @@
   ],
   "rateio": [
     {
-      "empresa": "12",
+      "empresa": "19",
       "departamento": "1",
-      "conta_gerencial": "179",
-      "valor": "9750"
-    },
-    {
-      "empresa": "12",
-      "departamento": "2",
-      "conta_gerencial": "179",
-      "valor": "9750"
+      "conta_gerencial": "77",
+      "valor": "19500"
     }
   ]
 }

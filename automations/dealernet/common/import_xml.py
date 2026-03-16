@@ -30,7 +30,7 @@ def run(page, log, xml_path):
 
         PlaywrightElement(page, '//*[@id="TRN_CANCEL"]').action('click')
 
-        log.succcess('Importação de NFe concluída!')
+        log.success('Importação de NFe concluída!')
 
     except Exception as e:
         log.error(e)
@@ -40,7 +40,7 @@ def run(page, log, xml_path):
 if __name__ == '__main__':
     _log = Logger("automations.dealernet.common.xml_import").get_logger()
 
-    path = f'../data/cadastrar_nf_produto.json'
+    path = f'../data/cadastro_nf_produto.json'
 
     with open(path, "r", encoding="utf-8") as file:
         _data = json.load(file)

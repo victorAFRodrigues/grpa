@@ -5,12 +5,6 @@ ENV PYTHONUNBUFFERED=1 \
 
 WORKDIR /app
 
-# Instala o Playwright
-RUN pip install --no-cache-dir playwright
-
-# Instala o browser
-RUN playwright install chromium
-
 # Instala uv
 RUN pip install --no-cache-dir uv==0.10.2
 
@@ -20,6 +14,10 @@ COPY pyproject.toml uv.lock ./
 # Instala dependências
 RUN uv sync --frozen
 
+# Instala o browser e sua dependencias
+RUN uv run playwright install-deps chromium
+RUN uv run playwright install chromium
+
 # Copia aplicação
 COPY . .
 
@@ -28,12 +26,9 @@ RUN mkdir -p /app/temp && chmod 700 /app/temp
 
 ENV TMPDIR=/app/temp
 
-RUN useradd -m appuser
-USER appuser
-
 # Healthcheck simples
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
     CMD python -c "import sys; sys.exit(0)" || exit 1
 
 # Executa seu main.py
-CMD ["python", "main.py"]
+CMD ["uv", "run", "--active", "main.py"]
