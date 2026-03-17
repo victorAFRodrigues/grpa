@@ -1,4 +1,5 @@
 from core.artifact_manager import ArtifactManager
+from core.updater import Updater
 from modules.utils.general.dotenv import DotEnv
 from modules.utils.general.envupdate import EnvUpdate
 from core.api import Api
@@ -59,8 +60,6 @@ class Main:
 
 
 if __name__ == '__main__':
+    Updater.bootstrap_automations()
     m = Main()
-    # env = DotEnv()
-    # env.set('ENV', 'docker')
-
-    m.test()
+    m.run()

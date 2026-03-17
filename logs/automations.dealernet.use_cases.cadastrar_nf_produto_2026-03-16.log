@@ -1,2 +1,0 @@
-2026-03-16 13:42:57 [ERROR] Erro ao executar cadastrar_nf_produto: No module named 'automations.dealernet.use_cases.cadastrar_nf_produto'
-2026-03-16 13:57:03 [ERROR] Erro ao executar cadastrar_nf_produto: cannot import name 'Xml' from 'modules.utils.general' (C:\Users\w7desenv.TPRIME030\PycharmProjects\grpa_lelac_oficial\modules\utils\general\__init__.py)

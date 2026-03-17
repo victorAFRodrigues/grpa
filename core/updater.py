@@ -12,6 +12,19 @@ class Updater:
         self.dotenv = DotEnv()
 
     @staticmethod
+    def bootstrap_automations():
+        root = Path(__file__).resolve().parents[1]
+        automations_dir = root / "automations"
+
+        # se volume estiver vazio, copia automations da imagem
+        if not any(automations_dir.iterdir()):
+            print("Inicializando automations no volume...")
+
+            image_automations = Path("/app/default_automations")
+
+            shutil.copytree(image_automations, automations_dir, dirs_exist_ok=True)
+
+    @staticmethod
     def automations(url: str):
         # pasta do projeto
         root = Path(__file__).resolve().parents[1]

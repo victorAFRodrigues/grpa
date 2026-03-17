@@ -1,0 +1,8 @@
+2026-03-17 14:31:25 [ERROR] Erro ao executar validar_fornecedor: No module named 'automations.dealernet'
+2026-03-17 14:45:31 [INFO] Iniciando automacao [dealernet.validar_fornecedor] | Guid: eb83d86d-e0f5-415d-8902-320233530c11
+2026-03-17 14:45:39 [SUCCESS] Login realizado!
+2026-03-17 14:45:45 [ERROR] Elemento '#span_PESSOA_CODIGO_0001' não encontrado.
+2026-03-17 14:45:45 [ERROR] Fornecedor não encontrado!
+2026-03-17 14:45:45 [INFO] O tempo de execução de 'validar_fornecedor' foi: 15.8793 segundos
+
+2026-03-17 14:45:45 [ERROR] Erro ao executar validar_fornecedor: Elemento '#span_PESSOA_CODIGO_0001' não encontrado.

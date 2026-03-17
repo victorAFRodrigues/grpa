@@ -165,7 +165,7 @@ class PlaywrightBrowserOptions:
 
         context = browser.new_context(
             # viewport=None  # equivalente ao start-maximized
-            viewport={"width": 1024, "height": 768}
+            viewport={"width": 1280, "height": 728}
         )
 
         return browser, context

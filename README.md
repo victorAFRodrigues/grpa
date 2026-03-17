@@ -6,36 +6,89 @@ Este repositório serve como um **boilerplate completo** para o desenvolvimento 
 
 ---
 
-## 🚀 Como Começar
+## 🛠️ Configuração do Ambiente
 
-### Pré-requisitos
-- **Python 3.14+**
-- **uv** (Recomendado para gerenciamento de pacotes e ambientes virtuais)
-- **Playwright Browsers**
+Antes de rodar o projeto em qualquer ambiente, crie um arquivo `.env` na raiz do projeto baseado no `.envexample`:
 
-### Instalação e Setup
-1. Clone o repositório.
-2. Crie e ative o ambiente virtual:
-   ```bash
-   uv venv
-   .venv\Scripts\activate  # No Windows
-   ```
-3. Instale as dependências:
-   ```bash
-   uv sync
-   ```
-4. Instale os navegadores do Playwright:
-   ```bash
-   playwright install chromium
-   ```
-5. Configure o arquivo `.env` (use o `.envexample` como base).
+```bash
+cp .envexample .env
+```
+
+Preencha as variáveis obrigatórias:
+- `API_URL`: URL base da API do GOEVO.
+- `GOEVO_APP_TPTOKEN`: Token de autenticação.
+- `RPA_EXECUTOR`: Nome identificador deste executor (ex: `GRPAE_001`).
+- `GRPA_AUTOMATION_VERSION`: Versão atual das automações.
 
 ---
 
-## Rodando via Docker:
+## 🚀 Execução em Desenvolvimento
 
+### 1. Sem Docker (Local)
+Ideal para debug e criação de novos scripts onde você precisa ver o navegador funcionando (modo `headless=False`).
 
-## Estrutura do Projeto
+**Pré-requisitos:**
+- Python 3.14+
+- [uv](https://github.com/astral-sh/uv) (Gerenciador de pacotes rápido)
+
+**Setup:**
+```bash
+# Criar e ativar o ambiente virtual
+uv venv
+# No Windows:
+.venv\Scripts\activate
+# No Linux/Mac:
+source .venv/bin/activate
+
+# Instalar dependências
+uv sync
+
+# Instalar o navegador Playwright (Chromium)
+uv run playwright install chromium
+```
+
+**Rodar a aplicação:**
+```bash
+uv run main.py
+```
+
+### 2. Com Docker
+Ideal para testar o comportamento em um ambiente isolado idêntico ao de produção.
+
+**Rodar com Docker Compose:**
+```bash
+docker-compose up --build
+```
+*Este comando irá construir a imagem localmente e subir o serviço `rpa_executor01` mapeando as pastas de logs, screenshots e automações para o seu host.*
+
+---
+
+## 🏗️ Execução em Produção
+
+Em produção, recomenda-se o uso de imagens pré-construídas para garantir a imutabilidade do ambiente.
+
+### 1. Build da Imagem
+Construa a imagem Docker com uma tag específica:
+```bash
+docker build -t grpa_lelac:latest .
+```
+
+### 2. Subindo com Docker Compose (Prod)
+O arquivo `docker-compose.prod.yml` está configurado para escalar múltiplos executores usando a mesma imagem base, mas com volumes e identificadores separados.
+
+```bash
+docker-compose -f docker-compose.prod.yml up -d
+```
+
+**Estrutura de Volumes em Produção:**
+Os logs e screenshots serão organizados por executor na raiz do projeto:
+- `./logs/GRPAE_001/`
+- `./screenshots/GRPAE_001/`
+- `./automations/GRPAE_001/` (Se necessário injetar automações externamente)
+
+---
+
+## 📁 Estrutura do Projeto
 
 - `core/`: Núcleo do sistema (API, Worker, Logger, Browser Automation).
 - `automations/`: Onde residem as automações específicas (separadas por sistema).
@@ -45,7 +98,7 @@ Este repositório serve como um **boilerplate completo** para o desenvolvimento 
 
 ---
 
-## Desenvolvendo uma Nova Automação
+## 💡 Desenvolvendo uma Nova Automação
 
 Siga este fluxo para garantir que sua automação seja compatível com o `worker` dinâmico do GRPA.
 
@@ -56,117 +109,30 @@ Crie uma pasta dentro de `automations/` com o nome do sistema alvo (ex: `meu_sis
 automations/
    meu_sistema/
         common/          # Módulos reutilizáveis (login, preenchimento de capas, etc)
-            __init__.py
-            login.py
         data/            # Arquivos JSON para simular dados da API localmente
-            meu_caso.json
         use_cases/       # Entry points da automação
-            __init__.py
-            meu_caso.py
 ```
 
-### 2. Criando um Use Case (Entry Point)
-Cada automação deve ter um arquivo em `use_cases/` que exporta obrigatoriamente uma função `run(page, log, data)`.
-
-**Template: `automations/meu_sistema/use_cases/meu_caso.py`**
-```python
-from json import load
-from core.browser_automation import BrowserAutomation
-from core.logger import Logger
-from modules.utils.general.exectime import ExecTime
-
-def run(page, log, data):
-    """
-    Função principal executada pelo Worker.
-    :param page: Instância do Playwright Page.
-    :param log: Logger configurado para o processo.
-    :param data: Dicionário com os parâmetros recebidos (ex: dados da NF).
-    :return: (bool, str) -> (Sucesso, Mensagem de retorno para o GOEVO).
-    """
-    try:
-        log.info(f"Iniciando processo: {data.get('id_tarefa', 'N/A')}")
-        
-        # Sua lógica de automação aqui...
-        page.goto('https://www.exemplo.com')
-        
-        return True, "Processo concluído com sucesso!"
-
-    except Exception as ex:
-        log.error(f"Falha na execução: {ex}")
-        raise ex # O worker capturará a exceção e salvará um screenshot
-
-if __name__ == '__main__':
-    # Bloco para teste local individual
-    _log = Logger("automations.meu_sistema.use_cases.meu_caso").get_logger()
-    path = f'../data/meu_caso.json'
-
-    with open(path, "r", encoding="utf-8") as file:
-        _data = load(file)
-
-    with ExecTime(_log, 'meu_caso'):
-        with BrowserAutomation() as _page:
-            try:
-                run(_page, _log, _data)
-            except Exception as ex:
-                _log.error(ex)
-```
-
-### 3. Criando Módulos Comuns (Common)
-Para partes complexas ou repetitivas, utilize a pasta `common/`.
-
-**Template: `automations/meu_sistema/common/login.py`**
-```python
-def run(page, log, data):
-    log.info("Realizando login...")
-    page.fill('#usuario', data['user'])
-    page.fill('#senha', data['password'])
-    page.click('#btn-entrar')
-```
-
----
-
-## Testes Locais
-
+### 2. Testes Locais Individuais
 Para testar sua automação sem depender da fila da API:
-1. Crie um arquivo JSON em `automations/meu_sistema/data/meu_caso.json` com os dados de teste.
-2. Execute o arquivo do use case diretamente:
+1. Crie um arquivo JSON em `automations/meu_sistema/data/meu_caso.json`.
+2. Execute o arquivo do use case diretamente via módulo:
    ```bash
    python -m automations.meu_sistema.use_cases.meu_caso
    ```
 
 ---
 
-## 💡 Recursos do Boilerplate
+## 🛡️ Recursos do Boilerplate
 
-### Browser Automation (`core.browser_automation`)
-Use a classe `PlaywrightElement` para interações robustas que lidam automaticamente com **iframes**:
-```python
-from core.browser_automation import PlaywrightElement
-
-# Clica em um elemento (mesmo que esteja dentro de um iframe aninhado)
-PlaywrightElement(page, '#botao-salvar').action('click')
-
-# Preenche um campo com timeout customizado
-PlaywrightElement(page, '#campo-texto', timeout=5000).action('write', 'Valor Teste')
-```
-
-### Logger (`core.logger`)
-O log é persistido em arquivo e exibido no console com cores para facilitar o debug:
-```python
-log.info("Iniciando etapa X")
-log.success("Etapa concluída")
-log.error("Erro na validação do campo Y")
-```
-
-### Captura Automática de Evidências
-Se uma automação falhar (lançar uma exceção):
-1. O `BrowserAutomation` tira um **screenshot** da tela exata do erro.
-2. O `Logger` salva o rastreio completo.
-3. O `main.py` converte essas evidências para Base64 e envia automaticamente para o **GOEVO**.
+- **PlaywrightElement**: Abstração para lidar com seletores e **iframes** automaticamente.
+- **Captura de Evidências**: Screenshots automáticos em caso de falha, enviados para o GOEVO em Base64.
+- **Logger Colorido**: Logs organizados por nível e persistidos em arquivo.
+- **Auto-Update**: Mecanismo integrado para atualização de módulos (ver `core/updater.py`).
 
 ---
 
-## Padrões de Desenvolvimento
-- **Nomenclatura:** Use `snake_case` para arquivos, pastas e funções.
-- **Tratamento de Erros:** Deixe as exceções críticas subirem para que o Worker registre a falha.
-- **Modularização:** Evite arquivos de use case gigantes. Mova lógicas de preenchimento de formulários extensos para a pasta `common/`.
+## 📝 Padrões de Desenvolvimento
+- **Nomenclatura:** `snake_case` para tudo.
+- **Erros:** Deixe exceções críticas subirem; o `Worker` cuida do log e evidência.
+- **Performance:** Utilize `common/` para modularizar formulários extensos.

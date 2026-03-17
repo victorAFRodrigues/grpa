@@ -18,6 +18,9 @@ RUN uv sync --frozen
 RUN uv run playwright install-deps chromium
 RUN uv run playwright install chromium
 
+# Copia automations da imagem para backup
+COPY automations /app/default_automations
+
 # Copia aplicação
 COPY . .
 
