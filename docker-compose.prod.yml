@@ -1,6 +1,6 @@
 services:
-  rpaExecutor01:
-    image: grpa_lelac:v2.0.0
+  rpa_executor01:
+    image: grpa_lelac:latest
     container_name: GRPA_001
     restart: unless-stopped
     environment:
@@ -11,8 +11,8 @@ services:
       - ./screenshots/GRPAE_001:/app/screenshots
       - ./logs/GRPAE_001:/app/logs
 
-  rpaExecutor02:
-    image: grpa_lelac:v2.0.0
+  rpa_executor02:
+    image: grpa_lelac:latest
     container_name: GRPA_002
     restart: unless-stopped
     environment:

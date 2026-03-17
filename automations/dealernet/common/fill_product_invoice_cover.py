@@ -48,7 +48,7 @@ def run(page, log, data):
                     pass
             finally:
                 if cod_verificacao.is_visible():
-                    cod_verificacao.fill(data['codigo_verificacao'])
+                    cod_verificacao.fill(data['codigo_verificacao'].replace(" ", ""))
 
         log.success("Capa da nota preenchida com sucesso!")
 

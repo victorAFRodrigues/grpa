@@ -41,10 +41,12 @@ def run(page, log, data):
 
         popup_msg = success_popup.inner_text().strip()
 
-        if 'gerada corretamente com o seguinte status: Pendente.' in popup_msg:
+        if 'Documento Fiscal Gerado Corretamente' in popup_msg:
             PlaywrightElement(page, '#DVELOP_CONFIRMPANELContainer_ConfirmPanel > div.Footer > span > button', 3000).action('click')
 
             return True, f"A nota fiscal com o id {data['numero_nf']} foi inserida com sucesso!"
+        else:
+            raise Exception("")
 
     except Exception as e:
         raise Exception(e)

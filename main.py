@@ -60,7 +60,7 @@ class Main:
 
 if __name__ == '__main__':
     m = Main()
-    env = DotEnv()
-    env.set('ENV', 'docker')
+    # env = DotEnv()
+    # env.set('ENV', 'docker')
 
     m.test()

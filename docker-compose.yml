@@ -1,5 +1,5 @@
 services:
-  rpaExecutor01:
+  rpa_executor01:
     build: .
     container_name: GRPA_001
     restart: unless-stopped
@@ -8,8 +8,8 @@ services:
       - RPA_EXECUTOR=GRPAE_001
     shm_size: 750m
     volumes:
-      - ./automations/GRPAE_001:/app/automations
-      - ./screenshots/GRPAE_001:/app/screenshots
-      - ./logs/GRPAE_001:/app/logs
+      - ./automations:/app/automations
+      - ./screenshots:/app/screenshots
+      - ./logs:/app/logs
 
 

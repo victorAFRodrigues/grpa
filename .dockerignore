@@ -45,3 +45,6 @@ ms-playwright/
 # temporários
 temp/
 tmp/
+
+
+__pycache__*

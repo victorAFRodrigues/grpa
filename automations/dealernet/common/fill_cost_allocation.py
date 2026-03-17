@@ -5,12 +5,6 @@ from core.logger import Logger
 from modules.utils.general.exectime import ExecTime
 
 def run(page, log, data):
-
-    parcelas = data["parcelas"]
-
-    if len(parcelas) < 2:
-        return True
-
     try:
         PlaywrightElement(page, '//*[@id="RATEIO"]').action('click')
 
