@@ -1,28 +1,29 @@
 services:
   rpa_executor01:
-    build: .
-#    image: winterowner/grpa_lelac:latest
+    image: winterowner/grpa_lelac:latest
     container_name: GRPA_001
     restart: unless-stopped
     environment:
+      - ENV=docker
       - RPA_EXECUTOR=GRPAE_001
+    env_file:
+      - .env
     shm_size: 750m
     volumes:
       - ./GRPAE_001/automations:/app/automations
       - ./GRPAE_001/screenshots:/app/screenshots
       - ./GRPAE_001/logs:/app/logs
-#      - ./automations/GRPAE_001:/app/automations
-#      - ./screenshots/GRPAE_001:/app/screenshots
-#      - ./logs/GRPAE_001:/app/logs
-#
-#  rpa_executor02:
-#    image: grpa_lelac:latest
-#    container_name: GRPA_002
-#    restart: unless-stopped
-#    environment:
-#      - RPA_EXECUTOR=GRPAE_002
-#    shm_size: 750m
-#    volumes:
-#      - ./automations/GRPAE_002:/app/automations
-#      - ./screenshots/GRPAE_002:/app/screenshots
-#      - ./logs/GRPAE_002:/app/logs
+  rpa_executor02:
+    image: winterowner/grpa_lelac:latest
+    container_name: GRPA_002
+    restart: unless-stopped
+    environment:
+      - ENV=docker
+      - RPA_EXECUTOR=GRPAE_002
+    env_file:
+      - .env
+    shm_size: 750m
+    volumes:
+      - ./GRPAE_002/automations:/app/automations
+      - ./GRPAE_002/screenshots:/app/screenshots
+      - ./GRPAE_002/logs:/app/logs
