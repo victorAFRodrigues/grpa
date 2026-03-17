@@ -1,5 +1,5 @@
 from json import load
-from automations.dealernet.common import login
+from automations.system.common import login
 from core.browser_automation import PlaywrightElement, BrowserAutomation
 from core.logger import Logger
 from modules.utils.general.exectime import ExecTime
@@ -29,7 +29,7 @@ def run (page, log, cnpj: str):
         raise Exception(ex)
 
 if __name__ == "__main__":
-    _log = Logger('automation.dealernet.common.validate_supplier').get_logger()
+    _log = Logger('automation.system.common.validate_supplier').get_logger()
 
     path = f'../data/validar_fornecedor.json'
 

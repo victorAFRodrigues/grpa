@@ -1,6 +1,6 @@
 services:
   rpa_executor01:
-    image: winterowner/grpa_lelac:latest
+    image: winterowner/grpa:latest
     container_name: GRPA_001
     restart: unless-stopped
     environment:
@@ -14,7 +14,7 @@ services:
       - ./GRPAE_001/screenshots:/app/screenshots
       - ./GRPAE_001/logs:/app/logs
   rpa_executor02:
-    image: winterowner/grpa_lelac:latest
+    image: winterowner/grpa:latest
     container_name: GRPA_002
     restart: unless-stopped
     environment:

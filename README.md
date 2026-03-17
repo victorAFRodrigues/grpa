@@ -70,7 +70,7 @@ Em produção, recomenda-se o uso de imagens pré-construídas para garantir a i
 ### 1. Build da Imagem
 Construa a imagem Docker com uma tag específica:
 ```bash
-docker build -t grpa_lelac:latest .
+docker build -t grpa_{substituir por nome do cliente}:latest .
 ```
 
 ### 2. Subindo com Docker Compose (Prod)

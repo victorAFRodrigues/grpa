@@ -1,7 +1,7 @@
 from json import load
 from time import sleep
 
-from automations.dealernet.common import switch_filial
+from automations.system.common import switch_filial
 from core.browser_automation import PlaywrightElement, BrowserAutomation
 from core.logger import Logger
 from modules.utils.general.dotenv import DotEnv
@@ -14,17 +14,17 @@ def run (page, log, data=None):
 
     USER = env.get("USER")
     PASSWORD = env.get("PASSWORD")
-    DEALERNET_URL = env.get("SYSTEM_URL")
+    SYSTEM_URL = env.get("SYSTEM_URL")
 
     try:
-        page.goto(DEALERNET_URL)
+        page.goto(SYSTEM_URL)
 
-        page.fill("#vUSUARIO_IDENTIFICADORALTERNATIVO", USER)
+        page.fill("#USER", USER)
         sleep(0.5)
-        page.fill("#vUSUARIOSENHA_SENHA", PASSWORD)
-        page.click("input[id=IMAGE3]")
+        page.fill("#SENHA", PASSWORD)
+        page.click("input[type='submit']")
 
-        PlaywrightElement(page, "#W0038TABLECENTRO", 6000).find()
+        PlaywrightElement(page, "#home", 6000).find()
 
         if data is not None:
             filial = data.get("filial")
@@ -46,7 +46,7 @@ def run (page, log, data=None):
         raise Exception(ex)
 
 if __name__ == "__main__":
-    _log = Logger('automations.dealernet.common.login').get_logger()
+    _log = Logger('automations.system.common.login').get_logger()
 
     path = f'../data/validar_fornecedor.json'
 
