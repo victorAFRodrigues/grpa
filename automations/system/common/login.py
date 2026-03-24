@@ -4,7 +4,7 @@ from time import sleep
 from automations.system.common import switch_filial
 from core.browser_automation import PlaywrightElement, BrowserAutomation
 from core.logger import Logger
-from modules.utils.general.dotenv import DotEnv
+from modules.utils.general.env import DotEnv
 from modules.utils.general.exectime import ExecTime
 
 

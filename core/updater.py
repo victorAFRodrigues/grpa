@@ -4,7 +4,7 @@ import shutil
 import tempfile
 from pathlib import Path
 
-from modules.utils.general.dotenv import DotEnv
+from modules.utils.general.env import DotEnv
 
 
 class Updater:

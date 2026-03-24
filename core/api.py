@@ -4,7 +4,7 @@ from numbers import Number
 
 import requests
 from core.updater import Updater
-from modules.utils.general.dotenv import DotEnv
+from modules.utils.general.env import DotEnv
 from modules.utils.models import GetTaskModel, ResetTaskModel, FinishTaskModel, UpdateAutomationsModel
 
 # Classe API, ela foi criada para padronizar as requests tendo em vista que todas devem ser feitas do mesmo jeito

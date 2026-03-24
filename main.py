@@ -1,6 +1,6 @@
 from core.artifact_manager import ArtifactManager
 from core.updater import Updater
-from modules.utils.general.dotenv import DotEnv
+from modules.utils.general.env import DotEnv
 from modules.utils.general.envupdate import EnvUpdate
 from core.api import Api
 from time import sleep

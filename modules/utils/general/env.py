@@ -1,5 +1,5 @@
 import os
-from dotenv import load_dotenv, find_dotenv
+from env import load_dotenv, find_dotenv
 
 class DotEnv:
     def __init__(self):
