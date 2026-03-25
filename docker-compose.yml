@@ -12,4 +12,11 @@ services:
       - ./screenshots:/app/screenshots
       - ./logs:/app/logs
 
+  grpa_docs:
+    build: ./docs
+    container_name: GRPA_DOCS
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+
 
