@@ -13,6 +13,8 @@ class Updater:
 
     @staticmethod
     def bootstrap_automations():
+
+
         root = Path(__file__).resolve().parents[1]
         automations_dir = root / "automations"
 

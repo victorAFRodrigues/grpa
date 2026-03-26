@@ -1,10 +1,8 @@
 from json import load
-from time import sleep
-
 from automations.system.common import switch_filial
 from core.browser_automation import PlaywrightElement, BrowserAutomation
 from core.logger import Logger
-from modules.utils.general.env import DotEnv
+from modules.utils.general.dotenv import DotEnv
 from modules.utils.general.exectime import ExecTime
 
 
@@ -14,28 +12,23 @@ def run (page, log, data=None):
 
     USER = env.get("USER")
     PASSWORD = env.get("PASSWORD")
-    SYSTEM_URL = env.get("SYSTEM_URL")
+    DEALERNET_URL = env.get("SYSTEM_URL")
 
     try:
-        page.goto(SYSTEM_URL)
+        page.goto(DEALERNET_URL)
 
-        page.fill("#USER", USER)
-        sleep(0.5)
-        page.fill("#SENHA", PASSWORD)
-        page.click("input[type='submit']")
+        page.fill("#vUSUARIO_IDENTIFICADORALTERNATIVO", USER)
+        page.fill("#vUSUARIOSENHA_SENHA", PASSWORD)
+        page.click("input[id=IMAGE3]")
 
-        PlaywrightElement(page, "#home", 6000).find()
+        PlaywrightElement(page, "#W0038TABLECENTRO", 4000).find()
 
-        if data is not None:
-            filial = data.get("filial")
-
-            if filial:
-                try:
-                    switch_filial.run(page, log, filial)
-                except Exception as ex:
-                    log.error(ex)
-                    pass
-
+        if data:
+            try:
+                switch_filial.run(page, log, data['filial'])
+            except Exception as ex:
+                log.error(ex)
+                pass
 
         log.success("Login realizado!")
 
