@@ -62,4 +62,4 @@ class Main:
 if __name__ == '__main__':
     Updater.bootstrap_automations()
     m = Main()
-    m.run()
+    m.test()
