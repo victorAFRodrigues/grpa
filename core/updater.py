@@ -14,7 +14,6 @@ class Updater:
     @staticmethod
     def bootstrap_automations():
 
-
         root = Path(__file__).resolve().parents[1]
         automations_dir = root / "automations"
 
@@ -63,11 +62,34 @@ class Updater:
                 raise Exception("Pasta 'automations' não encontrada no zip")
 
             # remover automations antiga
-            if automations_dir.exists():
-                shutil.rmtree(automations_dir)
 
-            # mover nova automations
-            shutil.copytree(new_automations, automations_dir)
+            # if automations_dir.exists():
+            #     shutil.rmtree(automations_dir)
+            #
+            # # mover nova automations
+            # shutil.copytree(new_automations, automations_dir)
+
+            # ... (código anterior de extração igual)
+
+            # 1. Limpar o conteúdo da automations_dir sem excluir a pasta raiz
+            if automations_dir.exists():
+                for item in automations_dir.iterdir():
+                    try:
+                        if item.is_file() or item.is_symlink():
+                            item.unlink()
+                        elif item.is_dir():
+                            shutil.rmtree(item)
+                    except Exception as e:
+                        print(f"Não foi possível remover {item}: {e}")
+
+            # 2. Em vez de copytree (que exige que o destino não exista),
+            # usamos um loop para mover o conteúdo da pasta extraída
+            for item in new_automations.iterdir():
+                dest = automations_dir / item.name
+                if item.is_dir():
+                    shutil.copytree(item, dest, dirs_exist_ok=True)
+                else:
+                    shutil.copy2(item, dest)
 
             version = url.split("/")[-1].split('v')[-1].replace('.zip', '')
 

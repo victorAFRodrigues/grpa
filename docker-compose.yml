@@ -5,7 +5,7 @@ services:
     restart: unless-stopped
     environment:
       - ENV=docker
-      - RPA_EXECUTOR=GRPAE_001
+      - RPA_EXECUTOR=GRPA_DEV_001
     shm_size: 750m
     volumes:
       - ./automations:/app/automations
