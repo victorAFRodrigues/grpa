@@ -1,20 +1,14 @@
 from json import load
-from automations.system.common import login, validate_supplier
 from core.browser_automation import BrowserAutomation
 from core.logger import Logger
-from modules.utils.general import ExecTime
+from modules.utils.general.exectime import ExecTime
 
 
 def run(page, log, data):
 
     try:
-        login.run(page, log, data)
 
-        ret = validate_supplier.run(page, log, data['cnpj'])
-
-        log.success(f"{ret}")
-
-        return True, ret
+        return True, data
 
     except Exception as ex:
         log.error("Fornecedor não encontrado!")
@@ -22,9 +16,10 @@ def run(page, log, data):
 
 
 if __name__ == '__main__':
-    _log = Logger("automations.system.use_cases.validar_fornecedor").get_logger()
+    _log = Logger("automations.system.use_cases.echo").get_logger()
 
-    path = f'../data/validar_fornecedor.json'
+    # Usa o json com dados mockados para teste unitario da rotina (descomentar se for utilizar)
+    path = f'../data/echo.json'
 
     with open(path, "r", encoding="utf-8") as file:
         _data = load(file)
@@ -32,7 +27,8 @@ if __name__ == '__main__':
     with ExecTime(_log, 'validar_fornecedor'):
         with BrowserAutomation() as _page:
             try:
-                run(_page, _log, _data)
+                ret = run(_page, _log, _data)
+                print(ret)
             except Exception as ex:
                 _log.error(ex)
                 pass
