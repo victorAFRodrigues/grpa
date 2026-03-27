@@ -54,7 +54,7 @@ class Main:
     def test(self):
         self._main()
 
-    def run(self):
+    def start(self):
         while True:
             self._main()
 

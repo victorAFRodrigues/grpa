@@ -13,3 +13,7 @@ dependencies = [
     "python-dotenv>=1.2.1",
     "requests>=2.32.5",
 ]
+[tool.uv.scripts]
+start = "python -c 'from main import Main; Main().run()'"
+test  = "python -c 'from main import Main; Main().test()'"
+setup = "python -c 'import setup; setup.start()'"
