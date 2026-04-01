@@ -53,7 +53,7 @@ class Main:
                 )
 
     def test(self):
-        self._main()
+        self._main(1)
 
     def start(self):
         while True:
