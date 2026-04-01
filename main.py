@@ -1,5 +1,6 @@
 from core.artifact_manager import ArtifactManager
 from core.updater import Updater
+from modules.utils.general.data import Data
 from modules.utils.general.env import DotEnv
 from modules.utils.general.envupdate import EnvUpdate
 from core.api import Api
@@ -11,7 +12,7 @@ class Main:
     def __init__(self):
         self.api = Api()
 
-    def _main(self):
+    def _main(self, searchtimeout = 0):
         self.api.search_update()
 
         with EnvUpdate():
@@ -20,7 +21,7 @@ class Main:
 
             if not response:
                 print(f"Nenhuma Task de automação foi encontrada. Tentando novamente em {search_timeout} segundos...\n")
-                sleep(search_timeout)
+                sleep(searchtimeout  if searchtimeout else search_timeout)
             else:
                 response = loads(response)[0]
 
@@ -29,9 +30,9 @@ class Main:
                 _data = loads(response["RPA_PARAMS"])
                 _system = DotEnv().get('APPLICATION')
 
-                result, msg = worker(_guid, _system, _use_case, _data)
+                _data = Data.from_raw(_data)
 
-                print(msg)
+                result, msg = worker(_guid, _system, _use_case, _data)
 
                 log_b64 = ''
                 screenshot_b64 = ''
@@ -65,3 +66,5 @@ if __name__ == '__main__':
 
     m = Main()
     m.test()
+
+
