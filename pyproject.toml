@@ -13,7 +13,19 @@ dependencies = [
     "python-dotenv>=1.2.1",
     "requests>=2.32.5",
 ]
-[tool.uv.scripts]
-start = "python -c 'from main import Main; Main().run()'"
-test  = "python -c 'from main import Main; Main().test()'"
-setup = "python -c 'import setup; setup.start()'"
+[tool.poe.tasks]
+
+[tool.poe.tasks.start]
+script = "main:start"
+
+[tool.poe.tasks.test]
+script = "main:test"
+
+[tool.poe.tasks.setup]
+script = "setup:start"
+
+[dependency-groups]
+dev = [
+    "poe>=0.1.0",
+    "poethepoet>=0.44.0",
+]
