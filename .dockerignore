@@ -46,8 +46,6 @@ ms-playwright/
 temp/
 tmp/
 
-
-# documentacao
-docs/
+.env
 
 __pycache__*

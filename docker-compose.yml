@@ -4,8 +4,11 @@ services:
     container_name: GRPA_001
     restart: unless-stopped
     environment:
-      - ENV=docker
-      - RPA_EXECUTOR=GRPA_DEV_001
+      - ENV=${ENV}
+      - API_URL=${API_URL} # URL base da API utilizada pelas automações. (OBRIGATÓRIO)
+      - GOEVO_APP_TPTOKEN=${GOEVO_APP_TPTOKEN} # Token de autenticação do app no GOEVO (OBRIGATÓRIO)
+      - RPA_EXECUTOR=${RPA_EXECUTOR} # Identificador do executor RPA (nome do servidor ou agente)
+      - GRPA_AUTOMATION_VERSION=${GRPA_AUTOMATION_VERSION} # Identificador da versão que será usada nos modulos de automação(OBRIGATÓRIO)
     shm_size: 750m
     volumes:
       - ./automations:/app/automations
