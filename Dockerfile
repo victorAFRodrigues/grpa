@@ -5,6 +5,9 @@ ENV PYTHONUNBUFFERED=1 \
 
 WORKDIR /app
 
+# cria .env vazio
+RUN touch /app/.env && chmod 666 /app/.env
+
 # Instala uv
 RUN pip install --no-cache-dir uv==0.10.2
 

@@ -9,6 +9,8 @@ services:
       - GOEVO_APP_TPTOKEN=${GOEVO_APP_TPTOKEN} # Token de autenticação do app no GOEVO (OBRIGATÓRIO)
       - RPA_EXECUTOR=${RPA_EXECUTOR} # Identificador do executor RPA (nome do servidor ou agente)
       - GRPA_AUTOMATION_VERSION=${GRPA_AUTOMATION_VERSION} # Identificador da versão que será usada nos modulos de automação(OBRIGATÓRIO)
+    env_file:
+      - .env
     shm_size: 750m
     volumes:
       - ./automations:/app/automations
