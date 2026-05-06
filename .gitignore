@@ -13,3 +13,6 @@ wheels/
 .env
 
 *.zip
+
+.openclaude
+.claude
