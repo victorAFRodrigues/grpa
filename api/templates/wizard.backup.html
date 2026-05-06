@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GRPA — Setup Wizard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./static/css/wizard.css">
+</head>
+<body>
+  <!-- Toast Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <header class="header">
+    <div class="header-corner">v2.0 // CONFIGURADOR</div>
+    <div class="header-tag">Sistema de Automação RPA</div>
+    <h1><span>GRPA</span> — Setup Wizard</h1>
+    <p>Configuração do ambiente · Geração do arquivo .env</p>
+  </header>
+
+  <!-- Progress Steps -->
+  <div class="progress-steps">
+    <div class="step active" id="step1">
+      <div class="step-indicator" id="step1-ind">1</div>
+      <div class="step-label">AUTENTICAÇÃO</div>
+    </div>
+    <div class="step" id="step2">
+      <div class="step-indicator" id="step2-ind">2</div>
+      <div class="step-label">API</div>
+    </div>
+    <div class="step" id="step3">
+      <div class="step-indicator" id="step3-ind">3</div>
+      <div class="step-label">EXECUTOR</div>
+    </div>
+    <div class="step" id="step4">
+      <div class="step-indicator" id="step4-ind">4</div>
+      <div class="step-label">VERSÃO</div>
+    </div>
+  </div>
+
+  <!-- Flash Messages -->
+  {% if flash %}
+  <div class="flash flash-{{ flash_type }}">
+    {{ flash }}
+  </div>
+  {% endif %}
+
+  <div class="wizard-container">
+    <form id="wizard-form" method="POST" action="/save-config">
+      <!-- Hidden field for API_URL (will be filled by JS) -->
+      <input type="hidden" id="API_URL" name="API_URL" value="">
+
+      <!-- Section 1: Login / Autenticação -->
+      <div class="section active" id="section-1">
+        <div class="section-header">
+          <span class="section-num">01</span>
+          <span class="section-title">Autenticação GoEvo</span>
+        </div>
+        <div class="section-body">
+          <div class="field">
+            <label class="field-label">URL Base <span class="req">*</span></label>
+            <div class="field-desc">URL base do sistema GoEvo.<br>
+              Ex: <code>https://empresa.goevo.net</code>
+            </div>
+            <input type="url" id="urlBase" name="urlBase"
+              value="{{ env_data.urlBase if env_data and env_data.urlBase else '' }}"
+              placeholder="https://seu-sistema.goevo.com.br" required>
+          </div>
+
+          <div class="field">
+            <label class="field-label">Company ID <span class="req">*</span></label>
+            <div class="field-desc">ID da empresa no GoEvo.<br>
+              Ex: <code>001</code> ou <code>EMPRESAXYZ</code>
+            </div>
+            <input type="text" id="companyId" name="companyId"
+              value="{{ env_data.companyId if env_data and env_data.companyId else '' }}"
+              placeholder="Ex: 001" required>
+          </div>
+
+          <div class="field">
+            <label class="field-label">Usuário <span class="req">*</span></label>
+            <div class="field-desc">Usuário de autenticação no GoEvo.</div>
+            <input type="text" id="usuario" name="usuario"
+              value="{{ env_data.usuario if env_data and env_data.usuario else '' }}"
+              placeholder="Seu usuário" required>
+          </div>
+
+          <div class="field">
+            <label class="field-label">Senha <span class="req">*</span></label>
+            <div class="field-desc">Senha de autenticação no GoEvo.</div>
+            <input type="password" id="senha" name="senha"
+              value="{{ env_data.senha if env_data and env_data.senha else '' }}"
+              placeholder="Sua senha" required>
+          </div>
+        </div>
+        <div class="btn-group">
+          <button type="button" class="btn btn-primary" onclick="validateStep1()">
+            Autenticar
+          </button>
+        </div>
+      </div>
+
+      <!-- Section 2: API Configuration -->
+      <div class="section" id="section-2">
+        <div class="section-header">
+          <span class="section-num">02</span>
+          <span class="section-title">Configuração da API</span>
+        </div>
+        <div class="section-body">
+          <div class="field">
+            <label class="field-label">API_URL <span class="req">*</span></label>
+            <div class="field-desc">URL gerada automaticamente para a API RPAManager.<br>
+              Formato: <code>{urlBase}/API/v1/?{companyId}/RPAManager</code>
+            </div>
+            <input type="text" id="API_URL_GENERATED" name="API_URL_GENERATED"
+              class="api-url-display"
+              readonly
+              >
+          </div>
+
+          <div class="field">
+            <label class="field-label">GOEVO_APP_TPTOKEN <span class="req">*</span></label>
+            <div class="field-desc">Token de autenticação do aplicativo no GOEvo.<br>
+              Encontrado em: <code>GOEVO Configurador → Usuários → Editar Usuário [RPA MANAGER] → API → Token</code>
+            </div>
+            <input type="text" id="GOEVO_APP_TPTOKEN" name="GOEVO_APP_TPTOKEN"
+              value="{{ env_data.GOEVO_APP_TPTOKEN if env_data and env_data.GOEVO_APP_TPTOKEN else '' }}"
+              placeholder="89a8e179-6cf4-4907-b1c1-b52f1f39738e" required>
+          </div>
+        </div>
+        <div class="btn-group">
+          <button type="button" class="btn btn-secondary" onclick="prevStep()">
+            Voltar
+          </button>
+          <button type="button" class="btn btn-primary" onclick="validateStep2()">
+            Próximo
+          </button>
+        </div>
+      </div>
+
+      <!-- Section 3: Executor Configuration -->
+      <div class="section" id="section-3">
+        <div class="section-header">
+          <span class="section-num">03</span>
+          <span class="section-title">Identificação do Executor</span>
+        </div>
+        <div class="section-body">
+          <div class="field">
+            <label class="field-label">RPA_EXECUTOR <span class="req">*</span></label>
+            <div class="field-desc">Nome único que identifica este servidor/agente de automação.<br>
+              Ex: <code>SRV_RPA_001</code> ou <code>NOTEBOOK_JOAO</code>
+            </div>
+            <input type="text" id="RPA_EXECUTOR" name="RPA_EXECUTOR"
+              value="{{ env_data.RPA_EXECUTOR if env_data and env_data.RPA_EXECUTOR else '' }}"
+              placeholder="SRV_RPA_001" required>
+          </div>
+        </div>
+        <div class="btn-group">
+          <button type="button" class="btn btn-secondary" onclick="prevStep()">
+            Voltar
+          </button>
+          <button type="button" class="btn btn-primary" onclick="validateStep3()">
+            Próximo
+          </button>
+        </div>
+      </div>
+
+      <!-- Section 4: Version/Environment -->
+      <div class="section" id="section-4">
+        <div class="section-header">
+          <span class="section-num">04</span>
+          <span class="section-title">Versão e Ambiente</span>
+        </div>
+        <div class="section-body">
+          <div class="field">
+            <label class="field-label">RPA_VERSION <span class="opt">(opcional)</span></label>
+            <div class="field-desc">Versão do módulo RPA a ser utilizado.</div>
+            <div class="select-wrap">
+              <select id="RPA_VERSION" name="RPA_VERSION">
+                <option value="v1.0.0" {{ 'selected' if not env_data or (not env_data.RPA_VERSION or env_data.RPA_VERSION == 'v1.0.0') }}>v1.0.0 (Padrão)</option>
+                {% for rpa in rpa_versions %}
+                <option value="{{ rpa.rpa_version }}" {{ 'selected' if env_data and env_data.RPA_VERSION == rpa.rpa_version else '' }}>
+                  {{ rpa.rpa_name }} - {{ rpa.rpa_version }}
+                </option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="field-label">ENVIRONMENT <span class="opt">(opcional)</span></label>
+            <div class="field-desc">
+              &nbsp;·&nbsp; <code>development</code> → ambiente local (dev e testes | com display na automação)<br>
+              &nbsp;·&nbsp; <code>production</code> → produção (servidores | sem display na automação)
+            </div>
+            <div class="select-wrap">
+              <select id="ENVIRONMENT" name="ENVIRONMENT">
+                <option value="local" {{ 'selected' if env_data and env_data.ENVIRONMENT == 'development' else '' }}>Development — Local</option>
+                <option value="docker" {{ 'selected' if env_data and env_data.ENVIRONMENT == 'production' else '' }}>Production — Servidor</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="btn-group">
+          <button type="button" class="btn btn-secondary" onclick="prevStep()">
+            Voltar
+          </button>
+          <button type="button" class="btn btn-success" onclick="validateStep4()">
+            Salvar Configuração
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <script src="/static/js/wizard.js"></script>
+</body>
+</html>

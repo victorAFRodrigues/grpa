@@ -1,0 +1,597 @@
+/* ========================================================================
+   GRPA Configurator - Wizard Styles
+   Baseado no design original do main.backup.py
+   ======================================================================== */
+
+:root {
+  --bg: #0a0e17;
+  --surface: #111827;
+  --surface2: #1a2235;
+  --border: #1e3a5f;
+  --border-glow: #1e6abf;
+  --cyan: #00c8ff;
+  --cyan-dim: #0077aa;
+  --green: #00ff88;
+  --yellow: #ffd94a;
+  --red: #ff4444;
+  --white: #e8f0fe;
+  --dim: #5a7a9a;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --font-sans: 'IBM Plex Sans', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 40px 16px 80px;
+  background-image:
+    radial-gradient(ellipse 80% 40% at 50% -10%, rgba(0,100,200,0.15) 0%, transparent 70%),
+    repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(30,58,95,0.25) 40px),
+    repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(30,58,95,0.15) 40px);
+}
+
+/* ========================================================================
+   Header
+   ======================================================================== */
+.header {
+  width: 100%;
+  max-width: 720px;
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--cyan);
+  background: var(--surface);
+  padding: 28px 36px 24px;
+  margin: 0 auto 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0,200,255,0.04) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.header-corner {
+  position: absolute;
+  top: 14px;
+  right: 20px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--dim);
+  opacity: 0.5;
+}
+
+.header-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--cyan);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  opacity: 0.7;
+}
+
+.header h1 {
+  font-family: var(--font-mono);
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--white);
+  letter-spacing: -0.5px;
+}
+
+.header h1 span {
+  color: var(--cyan);
+}
+
+.header p {
+  font-size: 13px;
+  color: var(--dim);
+  margin-top: 6px;
+  font-weight: 300;
+  font-family: var(--font-mono);
+}
+
+/* ========================================================================
+   Progress Steps
+   ======================================================================== */
+.progress-steps {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+  border-radius: 8px 8px 0 0;
+  width:100%;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  position: relative;
+}
+
+.step-indicator {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--surface2);
+  border: 2px solid var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--dim);
+  transition: all 0.3s ease;
+}
+
+.step.completed .step-indicator {
+  background: rgba(0, 200, 255, 0.4);
+  border-color: rgba(0, 200, 255, 0.6);
+  color: rgba(0, 200, 255, 0.8);
+}
+
+.step.completed .step-label {
+  color: rgba(0, 200, 255, 0.7);
+}
+
+.step.active .step-indicator {
+  background: var(--cyan);
+  border-color: var(--cyan);
+  color: #000;
+}
+
+.step-label {
+  font-size: 10px;
+  color: var(--dim);
+  text-align: center;
+  font-family: var(--font-mono);
+  letter-spacing: 1px;
+}
+
+.step.active .step-label {
+  color: var(--cyan);
+  font-weight: 600;
+}
+
+/* ========================================================================
+   Wizard Container / Card
+   ======================================================================== */
+.wizard-container {
+    width:100%;
+  max-width: 720px;
+  margin: 0 auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
+/* ========================================================================
+   Sections
+   ======================================================================== */
+.section {
+  display: none;
+  border-bottom: 1px solid var(--border);
+}
+
+.section.active {
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.section:last-child {
+  border-bottom: none;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 24px 14px;
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+}
+
+.section-num {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--cyan);
+  background: rgba(0, 200, 255, 0.08);
+  border: 1px solid var(--cyan-dim);
+  padding: 2px 8px;
+  letter-spacing: 1px;
+}
+
+.section-title {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--yellow);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.section-body {
+  padding: 20px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ========================================================================
+   Fields
+   ======================================================================== */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--cyan);
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.field-label .req {
+  color: var(--red);
+  font-size: 14px;
+  line-height: 1;
+}
+
+.field-label .opt {
+  color: var(--dim);
+  font-size: 10px;
+}
+
+.field-desc {
+  font-size: 11px;
+  color: var(--dim);
+  font-family: var(--font-mono);
+  line-height: 1.6;
+}
+
+.field-desc code {
+  color: var(--yellow);
+  background: rgba(255, 217, 74, 0.08);
+  padding: 0 4px;
+  border-radius: 2px;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="url"],
+select {
+  background: #0d1520;
+  border: 1px solid var(--border);
+  color: var(--white);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  padding: 10px 14px;
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+  width: 100%;
+  appearance: none;
+}
+
+input::placeholder {
+  color: var(--dim);
+  opacity: 0.5;
+}
+
+input:focus,
+select:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 3px rgba(0, 200, 255, 0.08), inset 0 0 20px rgba(0, 200, 255, 0.03);
+}
+
+input:hover,
+select:hover {
+  border-color: var(--border-glow);
+}
+
+select option {
+  background: #0d1520;
+}
+
+select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.select-wrap {
+  position: relative;
+}
+
+.select-wrap::after {
+  content: '▾';
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--cyan);
+  pointer-events: none;
+  font-size: 12px;
+}
+
+/* ========================================================================
+   Buttons
+   ======================================================================== */
+.btn-group {
+  padding: 20px 24px;
+  background: var(--surface2);
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.btn {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 12px 28px;
+  border: none;
+  cursor: pointer;
+  transition: all .2s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-primary {
+  background: var(--cyan);
+  color: #000;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #fff;
+  box-shadow: 0 0 24px rgba(0, 200, 255, 0.4);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--dim);
+  border: 1px solid var(--border);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  color: var(--white);
+  border-color: var(--dim);
+}
+
+.btn-success {
+  background: var(--green);
+  color: #000;
+}
+
+.btn-success:hover:not(:disabled) {
+  background: #fff;
+  box-shadow: 0 0 24px rgba(0, 255, 136, 0.4);
+}
+
+/* ========================================================================
+   Flash Messages
+   ======================================================================== */
+.flash {
+  max-width: 720px;
+  margin: 0 auto 8px;
+  padding: 14px 20px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  border-left: 3px solid;
+  background: var(--surface);
+  animation: slide-in 0.3s ease;
+}
+
+.flash-success {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+.flash-error {
+  border-color: var(--red);
+  color: var(--red);
+}
+
+.flash-info {
+  border-color: var(--cyan);
+  color: var(--cyan);
+}
+
+@keyframes slide-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ========================================================================
+   Loading State
+   ======================================================================== */
+.btn.loading {
+  position: relative;
+  color: transparent;
+  pointer-events: none;
+}
+
+.btn.loading::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  left: 50%;
+  top: 50%;
+  margin-left: -8px;
+  margin-top: -8px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ========================================================================
+   Readonly API URL field
+   ======================================================================== */
+.api-url-display {
+  background: var(--surface) !important;
+  border: 1px solid transparent !important;
+  color: var(--dim) !important;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none !important;
+}
+
+.api-url-display:focus {
+  outline: none;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+/* ========================================================================
+   Toast Notifications
+   ======================================================================== */
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.toast {
+  min-width: 300px;
+  padding: 16px 20px;
+  background: var(--surface);
+  border-left: 4px solid;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  animation: slide-in-right 0.3s ease;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.toast.toast-success {
+  border-color: var(--green);
+  background: rgba(0, 255, 136, 0.05);
+  color: var(--green);
+}
+
+.toast.toast-error {
+  border-color: var(--red);
+  background: rgba(255, 71, 87, 0.05);
+  color: var(--red);
+}
+
+.toast.toast-info {
+  border-color: var(--cyan);
+  background: rgba(0, 200, 255, 0.05);
+  color: var(--cyan);
+}
+
+.toast-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.toast-message {
+  flex: 1;
+}
+
+.toast-close {
+  background: none;
+  border: none;
+  color: var(--dim);
+  cursor: pointer;
+  font-size: 18px;
+  padding: 0;
+  line-height: 1;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.toast-close:hover {
+  opacity: 1;
+  color: var(--white);
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.toast.hiding {
+  animation: fade-out 0.3s ease forwards;
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* ========================================================================
+   Inline Spinner for Button
+   ======================================================================== */
+.btn .spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-right: 8px;
+  vertical-align: middle;
+}

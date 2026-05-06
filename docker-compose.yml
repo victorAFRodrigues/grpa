@@ -1,14 +1,29 @@
 services:
-  rpa_executor01:
+  grpa_api:
+    build: .
+    container_name: GRPA_API
+    restart: unless-stopped
+    command: ["uv", "run", "./api/main.py"]
+    ports:
+      - "80:8000" # Você acessa no navegador por http://localhost
+    env_file:
+      - .env
+    healthcheck:
+      # O curl roda dentro do container, então usa localhost:8000
+      test: ["CMD", "curl", "-f", "0.0.0.0:8000/health"]
+      interval: 5s      # Verifica rápido enquanto você configura
+      timeout: 3s
+      retries: 50       # Aumentei o limite para te dar tempo de preencher o wizard
+      start_period: 10s
+
+  grpa_worker01:
     build: .
     container_name: GRPA_001
     restart: unless-stopped
-    environment:
-      - ENV=${ENV}
-      - API_URL=${API_URL} # URL base da API utilizada pelas automações. (OBRIGATÓRIO)
-      - GOEVO_APP_TPTOKEN=${GOEVO_APP_TPTOKEN} # Token de autenticação do app no GOEVO (OBRIGATÓRIO)
-      - RPA_EXECUTOR=${RPA_EXECUTOR} # Identificador do executor RPA (nome do servidor ou agente)
-      - GRPA_AUTOMATION_VERSION=${GRPA_AUTOMATION_VERSION} # Identificador da versão que será usada nos modulos de automação(OBRIGATÓRIO)
+    command: ["uv", "run", "main.py"] # Omitido se já estiver no Dockerfile
+    depends_on:
+      grpa_api:
+        condition: service_healthy # O segredo está aqui
     env_file:
       - .env
     shm_size: 750m
@@ -23,5 +38,3 @@ services:
     restart: unless-stopped
     ports:
       - "3000:80"
-
-
