@@ -42,22 +42,28 @@ def _parse_parcelas(raw: str) -> list[dict]:
 def _parse_pipe_semicolon(raw: str, keys: list[str]) -> list[dict]:
     if not raw: return []
     result = []
-    # Divide pelos pipes |
     for bloco in raw.split("|"):
         if not bloco.strip(): continue
-        # Aplica a limpeza agressiva em cada parte separada por ;
+
         parts = [_clean_string(p) for p in bloco.split(";")]
-        # Preenche com string vazia se faltar coluna
+
+        # --- NOVIDADE AQUI: Verifica se existe pelo menos um valor real nas partes ---
+        # Se todas as partes forem strings vazias, ignoramos este bloco
+        if not any(parts):
+            continue
+
         parts += [""] * max(0, len(keys) - len(parts))
         result.append({k: parts[i] for i, k in enumerate(keys)})
+
     return result
+
 
 
 # Mapeamento Centralizado de Campos Especiais
 _SPECIAL_FIELDS = {
     "PSE_PARCE": _parse_parcelas,
     "ITENS_CONCATENADOS": lambda raw: _parse_pipe_semicolon(
-        raw, ["item", "produt", "descri", "quant", "vlruni", "total", "xplaca", "cc", "itemct"]
+        raw, ["item", "produt", "descri", "quant", "vlruni", "total", "xplaca", "cc", "conta", "ipi", "vldesc", "icms", "pis", "cofins", "icmsst", "seguro", "despesas", "valfre" ]
     ),
     "PSU_CC": lambda raw: _parse_pipe_semicolon(raw, ["cc", "dcc", "valor"]),
     "PSU_CONTA": lambda raw: _parse_pipe_semicolon(raw, ["conta", "dconta", "valor"]),
@@ -139,18 +145,37 @@ class Data:
     @classmethod
     def _parse_logic(cls, d: dict) -> "Data":
         processed = {}
+
+        # 1. Primeiro passamos por todos os campos para fazer o parse básico
         for key, value in d.items():
             upper_key = key.upper()
-
-            # 1. Aplicamos a limpeza pesada (Regex) no valor bruto
-            # Isso mata espaços triplos, tabs e quebras de linha
             raw_val = _clean_string(value)
 
             if upper_key in _SPECIAL_FIELDS:
-                # 2. O parser especial já utiliza o _clean_string internamente
                 processed[upper_key] = _SPECIAL_FIELDS[upper_key](raw_val)
             else:
-                # 3. Campos normais salvos totalmente limpos
                 processed[upper_key] = raw_val
+
+        # 2. Aplicação da regra de fallback para PSU_CC e PSU_CONTA
+        itens = processed.get("ITENS_CONCATENADOS", [])
+
+        if itens:
+            primeiro_item = itens[0]
+
+            # Fallback para PSU_CC
+            if not processed.get("PSU_CC"):
+                processed["PSU_CC"] = [{
+                    "cc": primeiro_item.get("cc", ""),
+                    "dcc": "",
+                    "valor": primeiro_item.get("total", "0")
+                }]
+
+            # Fallback para PSU_CONTA
+            if not processed.get("PSU_CONTA"):
+                processed["PSU_CONTA"] = [{
+                    "conta": primeiro_item.get("conta", ""),
+                    "dconta": "",
+                    "valor": primeiro_item.get("total", "0")
+                }]
 
         return cls(processed)
