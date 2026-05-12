@@ -27,6 +27,48 @@ SKIP_PLAYWRIGHT=false
 DRY_RUN=false
 
 # =============================================================================
+# Funções Auxiliares
+# =============================================================================
+# Executa comando com sudo apenas se necessário (quando não for root)
+run_with_sudo() {
+    if [ "$(id -u)" -eq 0 ]; then
+        $@
+    else
+        sudo $@
+    fi
+}
+
+# Verifica se sudo está disponível
+has_sudo() {
+    command -v sudo >/dev/null 2>&1
+}
+
+# Garante que sudo e pacotes básicos estejam disponíveis (para containers "crus")
+ensure_base_packages() {
+    # Se for root e sudo não existir, tenta instalar pacotes básicos
+    if [ "$(id -u)" -eq 0 ] && ! has_sudo; then
+        log_info "Container sem sudo detectado. Instalando pacotes básicos..."
+
+        if [ -f /etc/debian_version ]; then
+            # Debian/Ubuntu: instala sudo se necessário
+            if ! command -v apt-get >/dev/null 2>&1; then
+                log_error "apt-get não encontrado. Sistema não suportado."
+                return 1
+            fi
+            apt-get update -qq
+            apt-get install -y -qq sudo ca-certificates curl gnupg
+        elif [ -f /etc/redhat-release ]; then
+            # RHEL/CentOS
+            if ! command -v yum >/dev/null 2>&1; then
+                log_error "yum não encontrado. Sistema não suportado."
+                return 1
+            fi
+            yum install -y sudo
+        fi
+    fi
+}
+
+# =============================================================================
 # Funções de Output
 # =============================================================================
 log_info() {
@@ -88,7 +130,10 @@ check_docker_compose() {
 # Funções de Instalação - Docker
 # =============================================================================
 install_docker_linux() {
-    log_info "Instalando Docker para Linux..."
+log_info "Instalando Docker para Linux..."
+
+# Garante pacotes básicos para containers "crus"
+ensure_base_packages
 
     if [ -f /etc/debian_version ]; then
         # Debian/Ubuntu
@@ -100,10 +145,10 @@ install_docker_linux() {
             return
         fi
 
-        sudo apt-get update
-        sudo apt-get install -y docker.io docker-compose docker-buildx
-        sudo systemctl start docker
-        sudo systemctl enable docker
+        run_with_sudo apt-get update
+        run_with_sudo apt-get install -y docker.io docker-compose docker-buildx
+        run_with_sudo systemctl start docker
+        run_with_sudo systemctl enable docker
 
     elif [ -f /etc/redhat-release ]; then
         # RHEL/CentOS
@@ -114,9 +159,9 @@ install_docker_linux() {
             return
         fi
 
-        sudo yum install -y docker docker-compose
-        sudo systemctl start docker
-        sudo systemctl enable docker
+        run_with_sudo yum install -y docker docker-compose
+        run_with_sudo systemctl start docker
+        run_with_sudo systemctl enable docker
 
     elif [ -f /etc/arch-release ]; then
         # Arch Linux
@@ -127,9 +172,9 @@ install_docker_linux() {
             return
         fi
 
-        sudo pacman -S docker docker-compose
-        sudo systemctl start docker
-        sudo systemctl enable docker
+        run_with_sudo pacman -S docker docker-compose
+        run_with_sudo systemctl start docker
+        run_with_sudo systemctl enable docker
     else
         log_error "Distribuição Linux não suportada. Instale Docker manualmente."
         return 1
@@ -167,8 +212,8 @@ install_python_linux() {
             return
         fi
 
-        sudo apt-get update
-        sudo apt-get install -y python3.14 python3.14-venv python3.14-dev
+        run_with_sudo apt-get update
+        run_with_sudo apt-get install -y python3.14 python3.14-venv python3.14-dev
         log_success "Python ${PYTHON_VERSION} instalado!"
 
     elif [ -f /etc/redhat-release ]; then
@@ -177,7 +222,7 @@ install_python_linux() {
             return
         fi
 
-        sudo yum install -y python3.14
+        run_with_sudo yum install -y python3.14
         log_success "Python ${PYTHON_VERSION} instalado!"
     else
         log_warning "Instalação automática não disponível. Tentando pyenv..."
@@ -273,10 +318,10 @@ install_playwright() {
 
     # Instalar dependências do sistema para Playwright
     if [ -f /etc/debian_version ]; then
-        sudo apt-get update
-        sudo apt-get install -y libnss3 libnspr4 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libxkbcommon0 libxcomposite1 libxdamage1 libxfixes3 libxrandr2 libgbm1 libpango-1.0-0 libcairo2 libasound2
+        run_with_sudo apt-get update
+        run_with_sudo apt-get install -y libnss3 libnspr4 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libxkbcommon0 libxcomposite1 libxdamage1 libxfixes3 libxrandr2 libgbm1 libpango-1.0-0 libcairo2 libasound2
     elif [ -f /etc/redhat-release ]; then
-        sudo yum install -y alsa-lib libdrm xorg-x11-server-Xorg xorg-x11-xauth xkbcore libxkbcommon nss at-spi2-atk
+        run_with_sudo yum install -y alsa-lib libdrm xorg-x11-server-Xorg xorg-x11-xauth xkbcore libxkbcommon nss at-spi2-atk
     fi
 
     # Instalar browsers do Playwright
