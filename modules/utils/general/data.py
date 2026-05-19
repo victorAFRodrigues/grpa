@@ -2,8 +2,9 @@ import json
 import re
 from decimal import Decimal
 
+
 # ---------------------------------------------------------------------------
-# Funções de Auxiliares
+# Funções Auxiliares
 # ---------------------------------------------------------------------------
 
 def _clean_string(text: str) -> str:
@@ -11,11 +12,11 @@ def _clean_string(text: str) -> str:
     Remove espaços de borda (trim) e colapsa múltiplos espaços internos em um só.
     Também remove caracteres de controle como \t, \n, \r.
     """
-    if not text:
+    if text is None:
         return ""
-    # substitui qualquer sequência de whitespace por um único espaço
     text = re.sub(r'\s+', ' ', str(text))
     return text.strip()
+
 
 # ---------------------------------------------------------------------------
 # Funções de Parsing Especial
@@ -29,7 +30,6 @@ def _parse_parcelas(raw: str) -> list[dict]:
 
         return [
             {
-                # Limpeza profunda em cada campo da parcela
                 "valor": Decimal(_clean_string(p.get("VALOR", 0)).replace(',', '.')),
                 "venc": _clean_string(p.get("VENC", ""))
             }
@@ -39,34 +39,38 @@ def _parse_parcelas(raw: str) -> list[dict]:
         return []
 
 
-def _parse_pipe_semicolon(raw: str, keys: list[str]) -> list[dict]:
-    if not raw: return []
-    result = []
-    for bloco in raw.split("|"):
-        if not bloco.strip(): continue
+def _parse_json_and_clean(raw: str) -> list[dict]:
+    """
+    Lê o JSON gerado pelo SQL e aplica o trim/limpeza em todos os valores internos.
+    """
+    if not raw:
+        return []
 
-        parts = [_clean_string(p) for p in bloco.split(";")]
+    try:
+        data = json.loads(raw)
 
-        # --- NOVIDADE AQUI: Verifica se existe pelo menos um valor real nas partes ---
-        # Se todas as partes forem strings vazias, ignoramos este bloco
-        if not any(parts):
-            continue
+        if isinstance(data, dict):
+            data = [data]
 
-        parts += [""] * max(0, len(keys) - len(parts))
-        result.append({k: parts[i] for i, k in enumerate(keys)})
+        if isinstance(data, list):
+            cleaned_list = []
+            for item in data:
+                cleaned_item = {k: _clean_string(v) for k, v in item.items()}
+                cleaned_list.append(cleaned_item)
+            return cleaned_list
 
-    return result
-
+        return []
+    except json.JSONDecodeError:
+        return []
 
 
 # Mapeamento Centralizado de Campos Especiais
 _SPECIAL_FIELDS = {
     "PSE_PARCE": _parse_parcelas,
-    "ITENS_CONCATENADOS": lambda raw: _parse_pipe_semicolon(
-        raw, ["item", "produt", "descri", "quant", "vlruni", "total", "xplaca", "cc", "conta", "ipi", "vldesc", "icms", "pis", "cofins", "icmsst", "seguro", "despesas", "valfre" ]
-    ),
-    "PSU_CC": lambda raw: _parse_pipe_semicolon(raw, ["cc", "dcc", "valor"]),
-    "PSU_CONTA": lambda raw: _parse_pipe_semicolon(raw, ["conta", "dconta", "valor"]),
+    "ITENS_CONCATENADOS": _parse_json_and_clean,
+    "PSU_CC": _parse_json_and_clean,
+    "PSU_CONTA": _parse_json_and_clean,
+    "PSU_GERAL": _parse_json_and_clean,
 }
 
 
@@ -110,10 +114,6 @@ class Data:
     # --- Métodos de Construção (Factory) ---
     @classmethod
     def from_raw(cls, raw_input: str | list | dict) -> "Data":
-        """
-        Ponto de entrada principal.
-        Aceita JSON string, lista ou dicionário vindo do Protheus/RPA.
-        """
         data = raw_input
         if isinstance(raw_input, str):
             try:
@@ -149,33 +149,55 @@ class Data:
         # 1. Primeiro passamos por todos os campos para fazer o parse básico
         for key, value in d.items():
             upper_key = key.upper()
-            raw_val = _clean_string(value)
 
             if upper_key in _SPECIAL_FIELDS:
-                processed[upper_key] = _SPECIAL_FIELDS[upper_key](raw_val)
+                processed[upper_key] = _SPECIAL_FIELDS[upper_key](value)
             else:
-                processed[upper_key] = raw_val
+                processed[upper_key] = _clean_string(value)
 
-        # 2. Aplicação da regra de fallback para PSU_CC e PSU_CONTA
+        # =========================================================================
+        # 2. APLICAÇÃO DA REGRA DE FALLBACK (PSU_GERAL, PSU_CONTA, PSU_CC)
+        # =========================================================================
         itens = processed.get("ITENS_CONCATENADOS", [])
 
         if itens:
             primeiro_item = itens[0]
 
-            # Fallback para PSU_CC
-            if not processed.get("PSU_CC"):
-                processed["PSU_CC"] = [{
-                    "cc": primeiro_item.get("cc", ""),
-                    "dcc": "",
-                    "valor": primeiro_item.get("total", "0")
+            # Captura tolerante a letras maiúsculas/minúsculas vindas do banco
+            item_cc = primeiro_item.get("cc") or primeiro_item.get("CC", "")
+            item_dcc = primeiro_item.get("dcc") or primeiro_item.get("DCC", "")
+            item_conta = primeiro_item.get("conta") or primeiro_item.get("CONTA", "")
+            item_dconta = primeiro_item.get("dconta") or primeiro_item.get("DCONTA", "")
+
+            # Valor: tenta pegar o total do item, se não achar usa o total geral da nota
+            item_total = primeiro_item.get("total") or primeiro_item.get("TOTAL") or processed.get("PSE_TOTAL", "0")
+
+            item_total = Decimal(item_total) - Decimal(primeiro_item.get('vldesc'))
+
+            # Se o PSU_GERAL (usado na nova rotina) estiver vazio, gera a linha padrão
+            if not processed.get("PSU_GERAL"):
+                processed["PSU_GERAL"] = [{
+                    "cc": item_cc,
+                    "dcc": item_dcc,
+                    "conta": item_conta,
+                    "dconta": item_dconta,
+                    "valor": item_total
                 }]
 
-            # Fallback para PSU_CONTA
+            # Mantém compatibilidade com módulos antigos que usem PSU_CONTA
             if not processed.get("PSU_CONTA"):
                 processed["PSU_CONTA"] = [{
-                    "conta": primeiro_item.get("conta", ""),
-                    "dconta": "",
-                    "valor": primeiro_item.get("total", "0")
+                    "conta": item_conta,
+                    "dconta": item_dconta,
+                    "valor": item_total
+                }]
+
+            # Mantém compatibilidade com módulos antigos que usem PSU_CC
+            if not processed.get("PSU_CC"):
+                processed["PSU_CC"] = [{
+                    "cc": item_cc,
+                    "dcc": item_dcc,
+                    "valor": item_total
                 }]
 
         return cls(processed)
